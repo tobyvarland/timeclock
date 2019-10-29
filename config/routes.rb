@@ -1,5 +1,15 @@
 Rails.application.routes.draw do
+
   resources :punches
   resources :users
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  
+  get   "ipad",                 to: "ipad#index"
+  get   "ipad/card",            to: "ipad#timecard"
+  get   "ipad/now",             to: "ipad#now"
+  get   "ipad/employee_number", to: "mobile_sessions#number"
+  post  "ipad/employee_number", to: "mobile_sessions#validate_number"
+  get   "ipad/pin",             to: "mobile_sessions#pin"
+  post  "ipad/pin",             to: "mobile_sessions#validate_pin"
+  post  "ipad/logout",          to: "mobile_sessions#destroy"
+
 end

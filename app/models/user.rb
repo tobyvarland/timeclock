@@ -20,6 +20,10 @@ class User < ApplicationRecord
   validates :pin,
             presence: true,
             format: { with: /\A[0-9]{4}\z/ }
+
+  # Scopes.
+  scope :by_number, -> { order(:employee_number) }
+  scope :on_the_clock, -> { where("status != 'clocked_out'") }
   
   # Instance methods.
 
@@ -27,7 +31,7 @@ class User < ApplicationRecord
   def update_status
 
     # Find last non-notes punch.
-    punch = self.punches.not_notes.order(punch_at: :desc).first
+    punch = self.punches.not_notes.reverse_chronological.first
 
     # Set status.
     unless punch.blank?

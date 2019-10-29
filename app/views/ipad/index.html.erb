@@ -1,0 +1,19 @@
+<div class="row">
+  <div class="col-12"><p class="font-weight-bold text-center mt-3 mb-0"><%= current_user.name %></p></div>
+</div>
+<div class="row">
+  <div class="col-6 offset-3">
+    <% case current_user.status %>
+    <% when "clocked_in" %>
+      <%= render 'end_work_form', punch: @new_punch %>
+      <%= render 'start_break_form', punch: @new_punch %>
+    <% when "clocked_out", nil %>
+      <%= render 'start_work_form', punch: @new_punch %>
+    <% when "on_break" %>
+      <%= render 'end_break_form', punch: @new_punch %>
+    <% end %>
+    <hr>
+    <%= link_to("<i class=\"fas fa-clipboard-list\"></i> View Time Card".html_safe, ipad_card_url, class: ["btn", "btn-secondary", "btn-block"]) %>
+    <%= link_to("<i class=\"fas fa-sign-out-alt\"></i> Logout".html_safe, ipad_logout_url, method: :post, class: ["btn", "btn-secondary", "btn-block", "mt-3"]) %>
+  </div>
+</div>

@@ -1,0 +1,7 @@
+<%= form_with(url: ipad_pin_url, method: "post") do %>
+  <%= hidden_field_tag :employee_number, @employee_number %>
+  <%= content_tag(:div, class: "form-group") do %>
+    <%= password_field_tag(:pin, "", class: "form-control", autofocus: true) %>
+  <% end %>
+  <%= submit_tag "Continue" %>
+<% end %>

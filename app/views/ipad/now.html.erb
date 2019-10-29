@@ -1,0 +1,19 @@
+<div class="row">
+  <div class="col-12 d-flex flex-row justify-content-between align-items-center mt-3">
+    <p class="lead">
+      Clocked in right now:
+    </p>
+    <p>
+      <%= link_to("<i class=\"fas fa-times\"></i>".html_safe, ipad_url, class: ["btn", "btn-sm", "btn-danger"]) %>
+    </p>
+  </div>
+</div>
+<div class="row">
+  <%= render partial: 'right_now_box', locals: { heading: "Plating", min: 0, max: 199 } %>
+  <%= render partial: 'right_now_box', locals: { heading: "Maintenance", min: 200, max: 299 } %>
+  <%= render partial: 'right_now_box', locals: { heading: "Lab", min: 300, max: 399 } %>
+  <%= render partial: 'right_now_box', locals: { heading: "Shipping/QC", min: 400, max: 499 } %>
+  <%= render partial: 'right_now_box', locals: { heading: "Supervisors", min: 600, max: 799 } %>
+  <%= render partial: 'right_now_box', locals: { heading: "Office", min: 800, max: 999 } %>
+  <%= render partial: 'right_now_box', locals: { heading: "Easter Seals", min: 1000, max: 1099 } %>
+</div>

@@ -28,7 +28,7 @@ class PunchesController < ApplicationController
 
     respond_to do |format|
       if @punch.save
-        format.html { redirect_to @punch, notice: 'Punch was successfully created.' }
+        format.html { redirect_back fallback_location: @punch, notice: 'Punch was successfully created.' }
         format.json { render :show, status: :created, location: @punch }
       else
         format.html { render :new }

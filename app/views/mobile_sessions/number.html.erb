@@ -1,0 +1,6 @@
+<%= form_with(url: ipad_employee_number_url, method: "post") do %>
+  <%= content_tag(:div, class: "form-group") do %>
+    <%= text_field_tag(:employee_number, "", class: "form-control", autofocus: true) %>
+  <% end %>
+  <%= submit_tag "Continue" %>
+<% end %>

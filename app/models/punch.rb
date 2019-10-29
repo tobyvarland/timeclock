@@ -23,6 +23,8 @@ class Punch < ApplicationRecord
   after_destroy :update_user_status
 
   # Scopes.
+  scope :chronological, -> { order(:punch_at) }
+  scope :reverse_chronological, -> { order(punch_at: :desc) }
   scope :current_week, -> { where("DATE(punch_at) >= ? AND DATE(punch_at) <= ?", Punch.current_period_start, Punch.current_period_end) }
 
   # Instance methods.

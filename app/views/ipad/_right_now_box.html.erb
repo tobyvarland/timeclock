@@ -1,0 +1,34 @@
+<%
+  count = 0
+  @users.each do |u|
+    if u.employee_number >= min && u.employee_number <= max
+      count += 1
+    end
+  end
+%>
+<div class="col-12 col-sm-6 mb-3">
+  <div class="card">
+    <div class="card-header py-1 px-2 d-flex flex-row justify-content-between align-items-center">
+      <strong><%= heading %></strong>
+      <span class="badge badge-pill badge-<%= count == 0 ? 'dark' : 'primary' %>"><%= count %></span>
+    </div>
+    <% if count == 0 %>
+      <div class="card-body py-1 px-2">
+        <p class="card-text text-muted font-italic">Nobody clocked in.</p>
+      </div>
+    <% else %>
+      <table class="table table-borderless table-sm mb-0 border-between">
+        <tbody>
+          <% @users.each do |u| %>
+            <% next if u.employee_number < min || u.employee_number > max %>
+            <tr class="<%= u.status == "on_break" ? "table-warning" : "" %>">
+              <td class="w-55 pl-2"><%= u.name %></td>
+              <td class="w-25"><small class="font-italic text-muted"><%= u.status == "on_break" ? "On Break" : "" %></small></td>
+              <td class="w-20 text-right pr-2"><%= u.status_timestamp.localtime.strftime("%l:%M%P") %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% end %>
+  </div>
+</div>

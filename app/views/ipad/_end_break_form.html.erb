@@ -1,0 +1,6 @@
+<%= form_with(model: punch, remote: true, class: "my-3") do |form| %>
+  <%= form.hidden_field :user_id %>
+  <%= form.hidden_field :punch_at %>
+  <%= form.hidden_field :punch_type, value: "end_break" %>
+  <button class="btn btn-primary btn-block"><i class="fas fa-utensils"></i> End Break</button>
+<% end %>
