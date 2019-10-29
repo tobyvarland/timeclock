@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  punch_type: 1
+  punch_at: 2019-10-29 07:44:04
+
+two:
+  user: two
+  punch_type: 1
+  punch_at: 2019-10-29 07:44:04
