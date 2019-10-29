@@ -1,0 +1,13 @@
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark text-light fixed-top">
+  <%= image_tag "logo_dark.svg", class: "navbar-brand" %>
+  <div class="d-flex flex-row align-items-center justify-content-right ml-auto">
+    <span class="current-timestamp">@timestamp</span>
+    <button class="btn btn-sm btn-warning ml-3"><i class="fas fa-sync fa-spin"></i></button>
+  </div>
+  <ul class="navbar-nav ml-auto d-none">
+    <li class="nav-item current-timestamp">@timestamp</li>
+    <li class="nav-item">
+      <button class="btn btn-light">Refresh</button>
+    </li>
+  </ul>
+</nav>

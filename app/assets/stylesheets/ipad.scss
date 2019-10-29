@@ -22,10 +22,28 @@
 .w-90 { width: 90% !important; }
 .w-95 { width: 95% !important; }
 
+body {
+  padding-top: 64px;
+}
+
+.bg-on-break {
+  background-color: #ffeeba !important;
+}
+
 .border-between {
 
   tr + tr {
     border-top: 1px solid rgba(0, 0, 0, 0.0625);
   }
 
+}
+
+.navbar {
+  img {
+    height: 3rem;
+  }
+  .current-timestamp {
+    font-size: 200%;
+    font-weight: 100;
+  }
 }
