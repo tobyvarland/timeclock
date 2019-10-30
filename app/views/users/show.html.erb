@@ -1,20 +1,9 @@
-<p id="notice"><%= notice %></p>
+<div class="d-flex flex-row align-items-center justify-content-left my-3">
+  <h1 class="m-0">
+    <span><small class="font-weight-light">#<%= @user.employee_number %></small> <%= @user.name %></span>
+  </h1>
+</div>
 
-<p>
-  <strong>Employee number:</strong>
-  <%= @user.employee_number %>
-</p>
+<p class="font-weight-bold">Timeclock History</p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @user.name %>
-</p>
-
-<p>
-  <strong>Pin:</strong>
-  <%= @user.pin %>
-</p>
-
-<%= link_to 'Edit', edit_user_path(@user) %> |
-<%= link_to 'Back', users_path %> |
-<%= link_to 'New User', new_user_path %>
+<p><%= link_to "<i class=\"fas fa-angle-double-left\"></i> Back".html_safe, users_path, class: ["btn", "btn-sm", "btn-default"] %></p>

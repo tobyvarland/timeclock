@@ -1,32 +1,45 @@
-<%= form_with(model: user, local: true) do |form| %>
-  <% if user.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:</h2>
+<div class="row">
+  <div class="col-12 col-md-6">
+    <%= form_with(model: user, remote: true, class: ["bg-secondary", "text-light", "border", "mb-3", "shadow-sm", "p-3", "clearfix"]) do |form| %>
 
-      <ul>
-        <% user.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+      <% if user.errors.any? %>
+        <div class="alert alert-danger small">
+          <p class="my-0"><%= pluralize(user.errors.count, "error") %> prevented this user from being saved:</p>
+          <ul class="my-0">
+            <% user.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
 
-  <div class="field">
-    <%= form.label :employee_number %>
-    <%= form.number_field :employee_number %>
+      <div class="form-group">
+        <%= form.label :employee_number, "Employee #: #{required_field_indicator}".html_safe %>
+        <%= form.number_field :employee_number, class: "form-control", required: true %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :name, "Name: #{required_field_indicator}".html_safe %>
+        <%= form.text_field :name, class: "form-control", required: true %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :pin, "Pin: #{required_field_indicator}".html_safe %>
+        <%= form.text_field :pin, class: "form-control", required: true %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :username, "System i Username: #{required_field_indicator}".html_safe %>
+        <%= form.text_field :username, class: "form-control", required: true %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :access_level, "Access Level: #{required_field_indicator}".html_safe %>
+        <%= form.select :access_level, User.access_levels.keys.to_a.map { |a| [a.humanize, a] }, {}, class: "custom-select", required: true %>
+      </div>
+
+      <button class="btn btn-primary float-right" type="submit"><i class="fas fa-check"></i> Save</button>
+
+    <% end %>
   </div>
-
-  <div class="field">
-    <%= form.label :name %>
-    <%= form.text_field :name %>
-  </div>
-
-  <div class="field">
-    <%= form.label :pin %>
-    <%= form.text_field :pin %>
-  </div>
-
-  <div class="actions">
-    <%= form.submit %>
-  </div>
-<% end %>
+</div>

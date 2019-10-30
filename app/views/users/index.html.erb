@@ -1,31 +1,32 @@
-<p id="notice"><%= notice %></p>
+<div class="d-flex flex-row justify-content-between align-items-center my-3">
+  <h1 class="m-0">Manage Users</h1>
+  <%= link_to '<i class="fas fa-plus"></i> Add User'.html_safe, new_user_path, class: ["btn", "btn-sm", "btn-success"] %>
+</div>
 
-<h1>Users</h1>
-
-<table>
-  <thead>
+<table class="table table-bordered table-striped table-hover">
+  <thead class="thead-dark">
     <tr>
-      <th>Employee number</th>
-      <th>Name</th>
-      <th>Pin</th>
-      <th colspan="3"></th>
+      <th class="text-center">Employee #</th>
+      <th class="text-left">Name</th>
+      <th class="text-center">Pin</th>
+      <th class="text-center">System i</th>
+      <th class="text-center">Access Level</th>
+      <th class="text-center">Actions</th>
     </tr>
   </thead>
-
   <tbody>
-    <% @users.each do |user| %>
+    <% @users.each do |u| %>
       <tr>
-        <td><%= user.employee_number %></td>
-        <td><%= user.name %></td>
-        <td><%= user.pin %></td>
-        <td><%= link_to 'Show', user %></td>
-        <td><%= link_to 'Edit', edit_user_path(user) %></td>
-        <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td class="text-center"><%= render 'employee_number_form', user: u %></td>
+        <td class="text-left"><%= render 'name_form', user: u %></td>
+        <td class="text-center"><%= render 'pin_form', user: u %></td>
+        <td class="text-left"><%= render 'username_form', user: u %></td>
+        <td class="text-center"><%= render 'access_level_form', user: u %></td>
+        <td class="text-center">
+          <%= link_to '<i class="far fa-eye"></i> Details'.html_safe, u, class: ["btn", "btn-primary", "btn-sm"] %>
+          <%= link_to '<i class="fas fa-times"></i> Delete'.html_safe, u, method: :delete, class: ["btn", "btn-danger", "btn-sm"], data: { confirm: "Are you sure you want to delete #{u.name}?\n\nIf necessary, IT can restore this person later." } %>
+        </td>
       </tr>
     <% end %>
   </tbody>
 </table>
-
-<br>
-
-<%= link_to 'New User', new_user_path %>

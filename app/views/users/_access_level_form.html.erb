@@ -1,0 +1,3 @@
+<%= form_with(model: user, remote: true) do |form| %>
+  <%= form.select :access_level, User.access_levels.keys.to_a.map { |a| [a.humanize, a] }, {}, class: ["custom-select", "custom-select-sm"], required: true, onchange: "this.form.dispatchEvent(new Event('submit', {bubbles: true}));" %>
+<% end %>

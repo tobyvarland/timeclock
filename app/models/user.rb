@@ -9,6 +9,11 @@ class User < ApplicationRecord
     clocked_out: "clocked_out",
     on_break: "on_break"
   }
+  enum access_level: {
+    user: 1,
+    supervisor: 2,
+    admin: 3
+  }
 
   # Associations.
   has_many  :punches,
@@ -24,6 +29,10 @@ class User < ApplicationRecord
   validates :pin,
             presence: true,
             format: { with: /\A[0-9]{4}\z/ }
+  validates :username,
+            presence: true,
+            uniqueness: { case_sensitive: false },
+            format: { with: /\A[a-z]+\z/ }
 
   # Scopes.
   scope :by_number, -> { order(:employee_number) }

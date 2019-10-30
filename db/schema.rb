@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_30_174531) do
+ActiveRecord::Schema.define(version: 2019_10_30_202014) do
 
   create_table "punches", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -33,6 +33,8 @@ ActiveRecord::Schema.define(version: 2019_10_30_174531) do
     t.datetime "status_timestamp"
     t.datetime "secondary_status_timestamp"
     t.datetime "deleted_at"
+    t.integer "access_level", default: 1, null: false
+    t.string "username"
     t.index ["deleted_at"], name: "index_users_on_deleted_at"
   end
 
