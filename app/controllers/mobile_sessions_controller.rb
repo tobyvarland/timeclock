@@ -5,6 +5,7 @@ class MobileSessionsController < ApplicationController
 
   # Displays form for entering employee number.
   def number
+    @users = User.by_number
   end
 
   # Validates employee number.
@@ -14,7 +15,7 @@ class MobileSessionsController < ApplicationController
       session[:login_user] = params[:employee_number]
       redirect_to(action: :pin)
     else
-      render(:number)
+      redirect_to(action: :number)
     end
   end
 
@@ -22,16 +23,17 @@ class MobileSessionsController < ApplicationController
   def pin
     redirect_to(action: :number) unless session[:login_user].present?
     @employee_number = session[:login_user]
+    @user = User.find_by_employee_number(@employee_number)
   end
 
   # Validates pin.
   def validate_pin
-    user = User.find_by_employee_number(params[:employee_number])
-    if user && user.pin == params[:pin]
-      session[:mobile_user_id] = user.id
+    @user = User.find_by_employee_number(params[:employee_number])
+    if @user && @user.pin == params[:pin]
+      session[:mobile_user_id] = @user.id
       redirect_to(ipad_url)
     else
-      render(:pin)
+      redirect_to(action: :pin)
     end
   end
 

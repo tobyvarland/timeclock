@@ -13,7 +13,8 @@
       <%= render 'end_break_form', punch: @new_punch %>
     <% end %>
     <hr>
-    <%= link_to("<i class=\"fas fa-clipboard-list\"></i> View Time Card".html_safe, ipad_card_url, class: ["btn", "btn-secondary", "btn-block"]) %>
-    <%= link_to("<i class=\"fas fa-sign-out-alt\"></i> Logout".html_safe, ipad_logout_url, method: :post, class: ["btn", "btn-secondary", "btn-block", "mt-3"]) %>
+    <%= link_to("<i class=\"fas fa-clipboard-list\"></i> View Time Card".html_safe, ipad_card_url, class: ["btn", "btn-secondary", "btn-block", "btn-lg"]) %>
+    <%= link_to("<i class=\"fas fa-clock\"></i> Clocked in Right Now".html_safe, ipad_now_url, class: ["btn", "btn-secondary", "btn-block", "btn-lg", "mt-3"]) %>
+    <%= link_to("<i class=\"fas fa-sign-out-alt\"></i> Logout".html_safe, ipad_logout_url, method: :post, class: ["btn", "btn-secondary", "btn-block", "btn-lg", "mt-3"]) %>
   </div>
 </div>

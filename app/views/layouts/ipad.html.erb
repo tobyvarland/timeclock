@@ -16,7 +16,7 @@
 
   </head>
 
-  <body>
+  <body data-controller="<%= params[:controller] %>" data-action="<%= params[:action] %>">
     <%= render partial: "shared/ipad_nav" %>
     <div class="container-fluid">
       <%= yield %>

@@ -3,6 +3,79 @@ var iPad = {
   currentTimeSelector: ".current-timestamp",
   punchAtSelector: "input[name=\"punch[punch_at]\"]",
   updateClockInterval: null,
+  keypadButtonSelector: '.keypad-button',
+  textBox: null,
+
+  handleNumericButton: function(number) {
+    if (iPad.textBox.val().length < 4) { iPad.textBox.val(iPad.textBox.val() + number); }
+  },
+
+  handleEnterButton: function() {
+    if (iPad.textBox.val().length >= 3) { iPad.textBox.closest("form").submit(); }
+  },
+
+  handleDeleteButton: function() {
+    if (iPad.textBox.val().length > 0) { iPad.textBox.val(iPad.textBox.val().slice(0, -1)); }
+  },
+
+  setupKeypadButtons: function() {
+
+    // Set parameters based on page.
+    var action = $("body").data('action');
+    switch (action) {
+      case "number":
+        iPad.textBox = $("#employee_number");
+        break;
+      case "pin":
+        iPad.textBox = $("#pin");
+        break;
+      default:
+          return;
+    }
+
+    // Auto submit on select change.
+    if (action == "number") {
+      $("select").on("change", function(event) {
+        event.preventDefault();
+        iPad.textBox.val($(this).val());
+        $(this).closest("form").submit();
+      });
+    }
+
+    // Setup keyboard handlers.
+    $(document).on("keydown", function(event) {
+      var ch = (event.keyChar == null) ? event.keyCode : event.keyChar;
+      if (ch >= 96 && ch <= 105) { ch -= 48; }
+      if (ch >= 48 && ch <= 57) {
+        event.preventDefault();
+        iPad.handleNumericButton(String.fromCharCode(ch));
+      } else if (ch == 8 || ch == 46) {
+        event.preventDefault();
+        iPad.handleDeleteButton();
+      } else if (ch == 13) {
+        event.preventDefault();
+        iPad.handleEnterButton();
+      }
+    });
+
+    // Setup button clicks.
+    $(iPad.keypadButtonSelector).on("click", function(event) {
+      event.preventDefault();
+      var button = $(this);
+      var key = button.data("key");
+      switch (key) {
+        case "del":
+          iPad.handleDeleteButton();
+          break;
+        case "enter":
+          iPad.handleEnterButton();
+          break;
+        default:
+          iPad.handleNumericButton(String.fromCharCode(key));
+      }
+    });
+
+  },
 
   addLeadingZeroIfNecessary: function(value) {
     if (value < 10) { return "0" + value; }
@@ -71,4 +144,5 @@ var iPad = {
 $(document).on('turbolinks:load', function() {
   iPad.updateClock();
   iPad.updateClockInterval = setInterval(iPad.updateClock, 500);
+  iPad.setupKeypadButtons();
 });
