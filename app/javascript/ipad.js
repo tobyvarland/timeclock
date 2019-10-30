@@ -6,6 +6,22 @@ var iPad = {
   keypadButtonSelector: '.keypad-button',
   textBox: null,
 
+  deregisterKeypress: function() {
+    $(document).off('keydown');
+  },
+
+  isTouchable: function() {
+    var el = document.createElement('button');
+    eventName = 'ontouchend';
+    var isSupported = (eventName in el);
+    if (!isSupported) {
+      el.setAttribute(eventName, 'return;');
+      isSupported = (typeof el[eventName] == 'function');
+    }
+    el = null;
+    return isSupported;
+  },
+
   handleNumericButton: function(number) {
     if (iPad.textBox.val().length < 4) { iPad.textBox.val(iPad.textBox.val() + number); }
   },
@@ -19,6 +35,12 @@ var iPad = {
   },
 
   setupKeypadButtons: function() {
+
+    // Determine proper event for buttons.
+    var event = "click";
+    if (iPad.isTouchable()) {
+      event = "touchend";
+    }
 
     // Set parameters based on page.
     var action = $("body").data('action');
@@ -60,6 +82,7 @@ var iPad = {
 
     // Setup button clicks.
     $(iPad.keypadButtonSelector).on("click", function(event) {
+      console.log("Handling button event.");
       event.preventDefault();
       var button = $(this);
       var key = button.data("key");
@@ -71,7 +94,7 @@ var iPad = {
           iPad.handleEnterButton();
           break;
         default:
-          iPad.handleNumericButton(String.fromCharCode(key));
+          iPad.handleNumericButton(key);
       }
     });
 
@@ -139,9 +162,15 @@ var iPad = {
     $(iPad.currentTimeSelector).text(iPad.getCurrentTimestamp(true));
   },
 
+  hideAlerts: function() {
+    $(".alert-primary").fadeOut();
+  },
+
 }
 
 $(document).on('turbolinks:load', function() {
+  setTimeout(iPad.hideAlerts, 5000);
+  iPad.deregisterKeypress();
   iPad.updateClock();
   iPad.updateClockInterval = setInterval(iPad.updateClock, 500);
   iPad.setupKeypadButtons();

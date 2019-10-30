@@ -29,6 +29,24 @@ class Punch < ApplicationRecord
 
   # Instance methods.
 
+  # Description message.
+  def description
+    action = nil
+    case self.punch_type
+    when "start_work"
+      action = "Clocked in"
+    when "end_work"
+      action = "Clocked out"
+    when "start_break"
+      action = "Started break"
+    when "end_break"
+      action = "Ended break"
+    else
+      return nil
+    end
+    return "#{self.user.name}: #{action} @ #{self.punch_at.localtime.strftime("%I:%M%P")}"
+  end
+
   # Updates user status after punch saved.
   def update_user_status
     self.user.update_status unless self.punch_type == :notes

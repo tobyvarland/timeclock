@@ -26,9 +26,18 @@ class PunchesController < ApplicationController
   def create
     @punch = Punch.new(punch_params)
 
+    if params[:source].present? && params[:source] == "ipad"
+      if @punch.save
+        redirect_to ipad_logout_url, notice: @punch.description
+      else
+        redirect_to ipad_url, flash: { error: "There was an error processing your request. Contact IT for help." }
+      end
+      return
+    end
+
     respond_to do |format|
       if @punch.save
-        format.html { redirect_back fallback_location: @punch, notice: 'Punch was successfully created.' }
+        format.html { redirect_to @punch, notice: 'Punch was successfully created.' }
         format.json { render :show, status: :created, location: @punch }
       else
         format.html { render :new }

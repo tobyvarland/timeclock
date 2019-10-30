@@ -25,6 +25,9 @@ class User < ApplicationRecord
   scope :by_number, -> { order(:employee_number) }
   scope :on_the_clock, -> { where("status != 'clocked_out'") }
   
+  # Callbacks.
+  after_create  :update_status
+  
   # Instance methods.
 
   # Updates user status. Intended to be called whenever a punch for this user is saved.

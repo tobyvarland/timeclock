@@ -3,6 +3,7 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 $keypad-button-size: 5rem;
+$button-font-factor: 2.5;
 
 .w-5 { width: 5% !important; }
 .w-10 { width: 10% !important; }
@@ -53,11 +54,12 @@ body {
 .keypad-button {
   width: $keypad-button-size;
   height: $keypad-button-size;
-  font-size: $keypad-button-size / 3 !important;
+  font-size: $keypad-button-size / $button-font-factor !important;
   padding: 0 !important;
   text-align: center !important;
-  line-height: 3 !important;
+  line-height: $button-font-factor !important;
   border-radius: 100% !important;
+  font-weight: 700 !important;
 }
 
 .form-control[readonly] {

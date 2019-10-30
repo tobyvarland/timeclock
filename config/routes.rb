@@ -11,5 +11,6 @@ Rails.application.routes.draw do
   get   "ipad/pin",             to: "mobile_sessions#pin"
   post  "ipad/pin",             to: "mobile_sessions#validate_pin"
   post  "ipad/logout",          to: "mobile_sessions#destroy"
+  get   "ipad/logout",          to: "mobile_sessions#destroy"
 
 end
