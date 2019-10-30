@@ -1,5 +1,8 @@
 class ApplicationController < ActionController::Base
 
+  # Store current user in change tracking.
+  before_action :set_paper_trail_whodunnit
+
   # Make methods accessible as helpers.
   helper_method :current_user
   helper_method :logged_in?

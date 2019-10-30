@@ -1,5 +1,8 @@
 class User < ApplicationRecord
 
+  # Enable soft deletes.
+  acts_as_paranoid
+
   # Enumerations.
   enum status: {
     clocked_in: "clocked_in",
@@ -8,7 +11,8 @@ class User < ApplicationRecord
   }
 
   # Associations.
-  has_many  :punches
+  has_many  :punches,
+            dependent: :destroy
 
   # Validations.
   validates :employee_number,

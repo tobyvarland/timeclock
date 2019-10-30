@@ -1,5 +1,11 @@
 class Punch < ApplicationRecord
 
+  # Enable soft deletes.
+  acts_as_paranoid
+
+  # Enable change tracking.
+  has_paper_trail
+
   # Enumerations.
   enum punch_type: {
     start_work: "start_work",
