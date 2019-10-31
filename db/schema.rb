@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_30_202014) do
+ActiveRecord::Schema.define(version: 2019_10_31_175854) do
+
+  create_table "periods", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.date "starts_on", null: false
+    t.date "ends_on", null: false
+    t.boolean "is_closed", default: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "deleted_at"
+  end
 
   create_table "punches", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -19,8 +28,17 @@ ActiveRecord::Schema.define(version: 2019_10_30_202014) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.datetime "deleted_at"
+    t.bigint "period_id", null: false
     t.index ["deleted_at"], name: "index_punches_on_deleted_at"
+    t.index ["period_id"], name: "index_punches_on_period_id"
     t.index ["user_id"], name: "index_punches_on_user_id"
+  end
+
+  create_table "reason_codes", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "code", null: false
+    t.boolean "requires_notes", default: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -49,5 +67,6 @@ ActiveRecord::Schema.define(version: 2019_10_30_202014) do
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
+  add_foreign_key "punches", "periods"
   add_foreign_key "punches", "users"
 end

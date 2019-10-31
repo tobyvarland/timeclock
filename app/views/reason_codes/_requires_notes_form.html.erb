@@ -1,0 +1,5 @@
+<%= form_with(model: reason_code, remote: true) do |form| %>
+  <div class="form-check">
+    <%= form.check_box :requires_notes, class: "form-check-input", onchange: "this.form.dispatchEvent(new Event('submit', {bubbles: true}));" %>
+  </div>
+<% end %>

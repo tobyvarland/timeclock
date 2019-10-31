@@ -37,11 +37,24 @@ class User < ApplicationRecord
   # Scopes.
   scope :by_number, -> { order(:employee_number) }
   scope :on_the_clock, -> { where("status != 'clocked_out'") }
+  scope :without_salary, -> { where.not("(employee_number >= 700 AND employee_number <= 799)").where.not("(employee_number >= 900 AND employee_number <= 999)") }
   
   # Callbacks.
   after_create  :update_status
   
   # Instance methods.
+
+  # Authenticates via System i.
+  def ibm_authenticate(password)
+    uri = URI.parse("http://as400railsapi.varland.com/v1/auth")
+    http = Net::HTTP.new(uri.host, uri.port)
+    request = Net::HTTP::Post.new(uri.request_uri)
+    request.body = "user=#{self.username}&password=#{password}"
+    response = http.request(request)
+    return false unless response.code.to_s == '200'
+    result = JSON.parse(response.body)
+    return result['result']    
+  end
 
   # Updates user status. Intended to be called whenever a punch for this user is saved.
   def update_status

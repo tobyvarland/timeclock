@@ -1,0 +1,25 @@
+<div class="d-flex flex-row justify-content-between align-items-center my-3">
+  <h1 class="m-0">Manage Reason Codes</h1>
+  <%= link_to '<i class="fas fa-plus"></i> Add Code'.html_safe, new_reason_code_path, class: ["btn", "btn-sm", "btn-success"] %>
+</div>
+
+<table class="table table-bordered table-striped table-hover">
+  <thead class="thead-dark">
+    <tr>
+      <th class="text-left">Code</th>
+      <th class="text-center">Requires Notes?</th>
+      <th class="text-center">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @reason_codes.each do |r| %>
+      <tr>
+        <td class="text-left"><%= render 'code_form', reason_code: r %></td>
+        <td class="text-center"><%= render 'requires_notes_form', reason_code: r %></td>
+        <td class="text-center">
+          <%= link_to '<i class="fas fa-times"></i> Delete'.html_safe, r, method: :delete, class: ["btn", "btn-danger", "btn-sm"], data: { confirm: "Are you sure you want to delete this code?" } %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

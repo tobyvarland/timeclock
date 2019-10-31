@@ -1,0 +1,13 @@
+<div class="w-35">
+  <%= form_with(url: login_url, method: "post", class: ["bg-light", "border", "rounded", "shadow-sm", "p-3", "clearfix"]) do %>
+    <div class="form-group">
+      <label for="username">System i Username: <%= required_field_indicator.html_safe %></label>
+      <%= text_field_tag(:username, "", class: "form-control", required: true, autofocus: true) %>
+    </div>
+    <div class="form-group">
+      <label for="password">System i Password: <%= required_field_indicator.html_safe %></label>
+      <%= password_field_tag(:password, "", class: "form-control", required: true) %>
+    </div>
+    <button type="submit" class="btn btn-primary float-right"><i class="fas fa-check"></i> Login</button>
+  <% end %>
+</div>

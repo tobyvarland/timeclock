@@ -17,23 +17,41 @@ class Punch < ApplicationRecord
 
   # Associations.
   belongs_to  :user
+  belongs_to  :period
 
   # Validations.
   validates :punch_type,
             presence: true
   validates :punch_at,
             presence: true
+  validate  :require_open_period
   
   # Callbacks.
-  after_save    :update_user_status
-  after_destroy :update_user_status
+  after_save        :update_user_status
+  after_destroy     :update_user_status
+  before_validation :set_period
 
   # Scopes.
   scope :chronological, -> { order(:punch_at) }
   scope :reverse_chronological, -> { order(punch_at: :desc) }
-  scope :current_week, -> { where("DATE(punch_at) >= ? AND DATE(punch_at) <= ?", Punch.current_period_start, Punch.current_period_end) }
+  scope :current_week, -> { where("period_id = ?", Period.current.id) }
+  scope :previous_week, -> { where("period_id = ?", Period.last_week.id) }
 
   # Instance methods.
+
+  # Ensures period is open.
+  def require_open_period
+    return if self.period.blank?
+    if self.period.is_closed
+      errors.add(:period, "is already closed")
+    end
+  end
+
+  # Sets period.
+  def set_period
+    return if self.punch_at.blank?
+    self.period = Period.find_for(self.punch_at)
+  end
 
   # Description message.
   def description
@@ -56,28 +74,6 @@ class Punch < ApplicationRecord
   # Updates user status after punch saved.
   def update_user_status
     self.user.update_status unless self.punch_type == :notes
-  end
-
-  # Class methods.
-
-  # Returns period ending date for current week.
-  def self.current_period_end
-    today = Date.today
-    if today.wday == 6
-      return today
-    else
-      return today.next_occurring(:saturday)
-    end
-  end
-
-  # Periods period beginning date for current week.
-  def self.current_period_start
-    today = Date.today
-    if today.wday == 0
-      return today
-    else
-      return today.prev_occurring(:sunday)
-    end
   end
 
 end

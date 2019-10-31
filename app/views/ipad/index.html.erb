@@ -1,9 +1,9 @@
 <div class="row">
-  <div class="col-12"><p class="font-weight-bold text-center mt-3 mb-0"><%= current_user.name %></p></div>
+  <div class="col-12"><p class="font-weight-bold text-center mt-3 mb-0"><%= ipad_current_user.name %></p></div>
 </div>
 <div class="row">
   <div class="col-6 offset-3">
-    <% case current_user.status %>
+    <% case ipad_current_user.status %>
     <% when "clocked_in" %>
       <%= render 'end_work_form', punch: @new_punch %>
       <%= render 'start_break_form', punch: @new_punch %>

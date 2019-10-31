@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Code:</strong>
+  <%= @reason_code.code %>
+</p>
+
+<p>
+  <strong>Requires notes:</strong>
+  <%= @reason_code.requires_notes %>
+</p>
+
+<%= link_to 'Edit', edit_reason_code_path(@reason_code) %> |
+<%= link_to 'Back', reason_codes_path %>

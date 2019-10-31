@@ -6,10 +6,12 @@ class ApplicationController < ActionController::Base
   # Make methods accessible as helpers.
   helper_method :current_user
   helper_method :logged_in?
+  helper_method :ipad_current_user
+  helper_method :ipad_logged_in?
 
   # Gets reference to current user.
   def current_user    
-    User.find_by(id: session[:mobile_user_id])  
+    User.find_by(id: session[:user_id])  
   end
 
   # Determines if user is logged in.
@@ -18,7 +20,31 @@ class ApplicationController < ActionController::Base
   end
 
   def authorized
-    redirect_to(ipad_employee_number_url) unless logged_in?
+    redirect_to(login_url) unless logged_in?
+  end
+
+  def authorized_as_supervisor
+    redirect_to(login_url) unless logged_in?
+    redirect_to(root_url, flash: {error: "You are not authorized to access that page. Please contact IT if you need help."}) unless current_user.access_level_before_type_cast >= 2
+  end
+
+  def authorized_as_admin
+    redirect_to(login_url) unless logged_in?
+    redirect_to(root_url, flash: {error: "You are not authorized to access that page. Please contact IT if you need help."}) unless current_user.access_level_before_type_cast == 3
+  end
+
+  # Gets reference to current user.
+  def ipad_current_user    
+    User.find_by(id: session[:mobile_user_id])  
+  end
+
+  # Determines if user is logged in.
+  def ipad_logged_in?
+    !ipad_current_user.blank?  
+  end
+
+  def ipad_authorized
+    redirect_to(ipad_employee_number_url) unless ipad_logged_in?
   end
 
 end

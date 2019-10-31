@@ -12,7 +12,7 @@ class MobileSessionsController < ApplicationController
   def validate_number
     user = User.find_by_employee_number(params[:employee_number])
     if user.present?
-      session[:login_user] = params[:employee_number]
+      session[:mobile_employee_number] = params[:employee_number]
       redirect_to(action: :pin)
     else
       redirect_to(action: :number)
@@ -21,8 +21,8 @@ class MobileSessionsController < ApplicationController
 
   # Displays form for entering pin.
   def pin
-    redirect_to(action: :number) unless session[:login_user].present?
-    @employee_number = session[:login_user]
+    redirect_to(action: :number) unless session[:mobile_employee_number].present?
+    @employee_number = session[:mobile_employee_number]
     @user = User.find_by_employee_number(@employee_number)
   end
 
@@ -39,7 +39,7 @@ class MobileSessionsController < ApplicationController
 
   # Logs user out.
   def destroy
-    session.delete(:login_user)
+    session.delete(:mobile_employee_number)
     session.delete(:mobile_user_id)
     redirect_to(ipad_url)
   end

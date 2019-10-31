@@ -12,17 +12,56 @@
   <div class="collapse navbar-collapse" id="timeclockNavContent">
 
     <ul class="navbar-nav mr-auto">
+      <% if current_user %>
+        <li class="nav-item">
+          <%= link_to "<i class=\"fas fa-home\"></i> Home".html_safe, root_url, class: "nav-link" %>
+        </li>
+      <% end %>
       <li class="nav-item">
-        <a class="nav-link" href="#">Home</a>
+        <%= link_to "<i class=\"fas fa-user-clock\"></i> Right Now".html_safe, now_url, class: "nav-link" %>
       </li>
-      <% if true || (current_user && current_user.access_level == 3) %>
+      <% if current_user && current_user.access_level_before_type_cast >= 2 %>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown">
+            <i class="fas fa-asterisk"></i> Supervisor Functions
+          </a>
+          <div class="dropdown-menu">
+            <%= link_to "View Timeclock", ipad_url, class: "dropdown-item", target: "_blank" %>
+          </div>
+        </li>
+      <% end %>
+      <% if current_user && current_user.access_level_before_type_cast >= 2 %>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown">
+            <i class="fas fa-paperclip"></i> Reports
+          </a>
+          <div class="dropdown-menu">
+            <%= link_to "Current Week", reports_current_url, class: "dropdown-item", target: "_blank" %>
+            <%= link_to "Last Week", reports_previous_url, class: "dropdown-item", target: "_blank" %>
+          </div>
+        </li>
+      <% end %>
+      <% if current_user && current_user.access_level_before_type_cast == 3 %>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown">
             <i class="fas fa-cogs"></i> Administration
           </a>
           <div class="dropdown-menu">
             <%= link_to "Manage Users", users_url, class: "dropdown-item" %>
+            <%= link_to "Manage Reason Codes", reason_codes_url, class: "dropdown-item" %>
           </div>
+        </li>
+      <% end %>
+    </ul>
+
+    <ul class="navbar-nav ml-auto">
+      <% if current_user %>
+        <li class="nav-item">
+          <%= link_to "<i class=\"fas fa-power-off\"></i> Logout".html_safe, logout_url, class: "nav-link" %>
+        </li>
+      <% else %>
+        <li class="nav-item">
+          <%= link_to "<i class=\"fas fa-arrow-circle-right\"></i> Login".html_safe, login_url, class: "nav-link" %>
         </li>
       <% end %>
     </ul>

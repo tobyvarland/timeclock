@@ -1,4 +1,8 @@
 class UsersController < ApplicationController
+
+  # Require admin privileges.
+  before_action :authorized_as_admin
+
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   # GET /users
