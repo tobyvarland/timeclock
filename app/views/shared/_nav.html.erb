@@ -27,6 +27,7 @@
           </a>
           <div class="dropdown-menu">
             <%= link_to "View Timeclock", ipad_url, class: "dropdown-item", target: "_blank" %>
+            <%= link_to "Edit Records", punches_url, class: "dropdown-item" %>
           </div>
         </li>
       <% end %>
@@ -47,7 +48,7 @@
             <i class="fas fa-cogs"></i> Administration
           </a>
           <div class="dropdown-menu">
-            <%= link_to "Manage Users", users_url, class: "dropdown-item" %>
+            <%= link_to "Manage Employees", users_url, class: "dropdown-item" %>
             <%= link_to "Manage Reason Codes", reason_codes_url, class: "dropdown-item" %>
           </div>
         </li>

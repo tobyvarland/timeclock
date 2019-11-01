@@ -22,15 +22,26 @@
             <th scope="col" class="text-center">Date</th>
             <th scope="col" class="text-center">Time</th>
             <th scope="col" class="text-center">Type</th>
+            <th scope="col" class="text-left">Edited?</th>
+            <th scope="col" class="text-left">Notes</th>
           </tr>
         </thead>
         <tbody>
           <% @punches.each do |p| %>
             <tr>
-              <td class="text-center"><%= p.punch_at.localtime.strftime("%A") %></td>
-              <td class="text-center"><%= p.punch_at.localtime.strftime("%m/%d/%y") %></td>
-              <td class="text-center"><%= p.punch_at.localtime.strftime("%I:%M%P") %></td>
+              <td class="text-center"><%= p.punch_at.strftime("%A") %></td>
+              <td class="text-center"><%= p.punch_at.strftime("%m/%d/%y") %></td>
+              <td class="text-center"><%= p.punch_at.strftime("%I:%M%P") %></td>
               <td class="text-center <%= class_for_punch_type(p.punch_type) %>"><%= p.punch_type.gsub(/_/, ' ').titlecase %></td>
+              <td class="text-left">
+                <% if p.editor.blank? %>
+                  &nbsp;
+                <% else %>
+                  <small class="text-muted">By:</small> <%= p.editor.name %>, <%= p.edited_at.strftime("%m/%d/%y %I:%M%P") %><br>
+                  <small class="text-muted">Reason:</small> <%= p.reason_code.code %>
+                <% end %>
+              </td>
+              <td class="text-left"><%= p.notes %></td>
             </tr>
           <% end %>
         </tbody>

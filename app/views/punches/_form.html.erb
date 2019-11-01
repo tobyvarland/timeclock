@@ -1,9 +1,11 @@
-<%= form_with(model: punch, local: true) do |form| %>
-  <% if punch.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(punch.errors.count, "error") %> prohibited this punch from being saved:</h2>
+<%= form_with(model: punch, remote: true, class: ["bg-light", "border", "mb-3", "shadow-sm", "p-3", "clearfix"]) do |form| %>
 
-      <ul>
+  <%= form.hidden_field :edited_by_id, value: current_user.id %>
+
+  <% if punch.errors.any? %>
+    <div class="alert alert-danger small">
+      <p class="my-0"><%= pluralize(punch.errors.count, "error") %> prevented this record from being saved:</p>
+      <ul class="my-0">
         <% punch.errors.full_messages.each do |message| %>
           <li><%= message %></li>
         <% end %>
@@ -11,22 +13,31 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= form.label :user_id %>
-    <%= form.text_field :user_id %>
+  <div class="form-group">
+    <%= form.label :user_id, "Employee: #{required_field_indicator}".html_safe %>
+    <%= form.select :user_id, User.by_number.collect {|u| ["#{u.employee_number} &ndash; #{u.name}".html_safe, u.id] }, {}, class: "custom-select", required: true, autofocus: true %>
   </div>
 
-  <div class="field">
-    <%= form.label :punch_type %>
-    <%= form.number_field :punch_type %>
+  <div class="form-group">
+    <%= form.label :punch_type, "Type: #{required_field_indicator}".html_safe %>
+    <%= form.select :punch_type, Punch.punch_types.keys.to_a.map { |a| [a.humanize.titleize, a] }, {}, class: "custom-select", required: true %>
   </div>
 
-  <div class="field">
-    <%= form.label :punch_at %>
-    <%= form.datetime_select :punch_at %>
+  <div class="form-group">
+    <%= form.label :punch_at, "Date/Time: #{required_field_indicator}".html_safe %>
+    <%= form.datetime_local_field :punch_at, class: "form-control", required: true %>
   </div>
 
-  <div class="actions">
-    <%= form.submit %>
+  <div class="form-group">
+    <%= form.label :reason_code_id, "Reason: #{required_field_indicator}".html_safe %>
+    <%= form.select :reason_code_id, ReasonCode.order(:code).collect {|r| [r.code, r.id] }, {}, class: "custom-select", required: true %>
   </div>
+
+  <div class="form-group">
+    <%= form.label :notes, "Notes:".html_safe %>
+    <%= form.text_area :notes, class: "form-control", rows: 3 %>
+  </div>
+
+  <button class="btn btn-primary float-right" type="submit"><i class="fas fa-check"></i> Save</button>
+
 <% end %>

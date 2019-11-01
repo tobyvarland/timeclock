@@ -1,7 +1,7 @@
 var iPad = {
 
   currentTimeSelector: ".current-timestamp",
-  punchAtSelector: "input[name=\"punch[punch_at]\"]",
+  punchAtSelector: "[data-controller=\"ipad\"] input[name=\"punch[punch_at]\"]",
   updateClockInterval: null,
   keypadButtonSelector: '.keypad-button',
   textBox: null,
@@ -148,10 +148,11 @@ var iPad = {
                 + ":"
                 + iPad.addLeadingZeroIfNecessary(currentMinute)
                 + ":"
-                + iPad.addLeadingZeroIfNecessary(currentSecond)
+                + iPad.addLeadingZeroIfNecessary(currentSecond);
+                /*
                 + " -"
                 + iPad.addLeadingZeroIfNecessary(offsetHours)
-                + "00";
+                + "00";*/
     }
     return timestamp;
 

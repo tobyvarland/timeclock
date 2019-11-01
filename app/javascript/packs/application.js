@@ -8,6 +8,7 @@ require("turbolinks").start()
 require("@rails/activestorage").start()
 require("channels")
 require("ipad")
+require("timeclock")
 
 
 // Uncomment to copy all static images under ../images to the output folder and reference

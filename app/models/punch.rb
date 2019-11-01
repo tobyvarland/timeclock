@@ -18,6 +18,12 @@ class Punch < ApplicationRecord
   # Associations.
   belongs_to  :user
   belongs_to  :period
+  belongs_to  :editor,
+              class_name: "User",
+              foreign_key: "edited_by_id",
+              optional: true
+  belongs_to  :reason_code,
+              optional: true
 
   # Validations.
   validates :punch_type,
@@ -25,19 +31,37 @@ class Punch < ApplicationRecord
   validates :punch_at,
             presence: true
   validate  :require_open_period
+  validate  :require_notes_if_reason_code
   
   # Callbacks.
   after_save        :update_user_status
   after_destroy     :update_user_status
   before_validation :set_period
+  before_save       :update_edit_timestamp
 
   # Scopes.
   scope :chronological, -> { order(:punch_at) }
   scope :reverse_chronological, -> { order(punch_at: :desc) }
   scope :current_week, -> { where("period_id = ?", Period.current.id) }
   scope :previous_week, -> { where("period_id = ?", Period.last_week.id) }
+  scope :in_open_period, -> { joins(:period).where(periods: { is_closed: false }) }
 
   # Instance methods.
+
+  # Requires notes if reason code requires notes.
+  def require_notes_if_reason_code
+    return if self.reason_code.blank?
+    if self.notes.blank? && self.reason_code.requires_notes
+      errors.add(:notes, "can't be blank for this reason code")
+    end
+  end
+
+  # Update edited_at if record is edited.
+  def update_edit_timestamp
+    if self.edited_by_id_changed? || self.notes_changed? || self.reason_code_id_changed?
+      self.edited_at = DateTime.now.localtime.strftime("%Y-%m-%d %H:%M:%S")
+    end
+  end
 
   # Ensures period is open.
   def require_open_period
@@ -68,7 +92,7 @@ class Punch < ApplicationRecord
     else
       return nil
     end
-    return "#{self.user.name}: #{action} @ #{self.punch_at.localtime.strftime("%I:%M%P")}"
+    return "#{self.user.name}: #{action} @ #{self.punch_at.strftime("%I:%M%P")}"
   end
 
   # Updates user status after punch saved.

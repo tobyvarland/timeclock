@@ -24,12 +24,12 @@ class ApplicationController < ActionController::Base
   end
 
   def authorized_as_supervisor
-    redirect_to(login_url) unless logged_in?
+    redirect_to(login_url) and return unless logged_in?
     redirect_to(root_url, flash: {error: "You are not authorized to access that page. Please contact IT if you need help."}) unless current_user.access_level_before_type_cast >= 2
   end
 
   def authorized_as_admin
-    redirect_to(login_url) unless logged_in?
+    redirect_to(login_url) and return unless logged_in?
     redirect_to(root_url, flash: {error: "You are not authorized to access that page. Please contact IT if you need help."}) unless current_user.access_level_before_type_cast == 3
   end
 

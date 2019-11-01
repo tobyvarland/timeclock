@@ -1,6 +1,53 @@
-<h1>Editing Punch</h1>
+<h1 class="my-3">Edit Record</h1>
 
-<%= render 'form', punch: @punch %>
+<div class="row">
+  <div class="col-12 col-md-6">
+    <%= render 'form', punch: @punch %>
+  </div>
+  <div class="col-12 col-md-6">
+    <div class="bg-secondary text-white border shadow-sm mb-3 px-3 pt-3">
+      <p class="font-weight-bold">Record History</p>
+      <div class="card bg-dark text-white mb-3">
+        <div class="card-body p-2">
+          <small class="text-muted">Employee:</small> <%= "#{@punch.user.employee_number} &ndash; #{@punch.user.name}".html_safe %><br>
+          <small class="text-muted">Type:</small> <%= @punch.punch_type.humanize.titleize %><br>
+          <small class="text-muted">Timestamp:</small> <%= @punch.punch_at.strftime("%m/%d/%y %l:%M:%S%P") %>
+          <% unless @punch.edited_at.blank? %>
+            <hr class="my-2">
+            <small class="text-muted">Edited By:</small> <%= "#{@punch.editor.employee_number} &ndash; #{@punch.editor.name}".html_safe %><br>
+            <small class="text-muted">When:</small> <%= @punch.edited_at.strftime("%m/%d/%y %l:%M:%S%P") %><br>
+            <small class="text-muted">Reason:</small> <%= @punch.reason_code.code %>
+            <% unless @punch.notes.blank? %>
+              <hr class="my-2">
+              <small class="text-muted">Notes:</small><br>
+              <%= @punch.notes %>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+      <% @punch.versions.each do |v| %>
+        <% next if v.event == "create" %>
+        <div class="card bg-light text-dark mb-3">
+          <div class="card-body p-2">
+            <small class="text-muted">Employee:</small> <%= "#{v.reify.user.employee_number} &ndash; #{v.reify.user.name}".html_safe %><br>
+            <small class="text-muted">Type:</small> <%= v.reify.punch_type.humanize.titleize %><br>
+            <small class="text-muted">Timestamp:</small> <%= v.reify.punch_at.strftime("%m/%d/%y %l:%M:%S%P") %>
+            <% unless v.reify.edited_at.blank? %>
+              <hr class="my-2">
+              <small class="text-muted">Edited By:</small> <%= "#{v.reify.editor.employee_number} &ndash; #{v.reify.editor.name}".html_safe %><br>
+              <small class="text-muted">When:</small> <%= v.reify.edited_at.strftime("%m/%d/%y %l:%M:%S%P") %><br>
+              <small class="text-muted">Reason:</small> <%= v.reify.reason_code.code %>
+              <% unless v.reify.notes.blank? %>
+                <hr class="my-2">
+                <small class="text-muted">Notes:</small><br>
+                <%= v.reify.notes %>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
 
-<%= link_to 'Show', @punch %> |
-<%= link_to 'Back', punches_path %>
+<p><%= link_to "<i class=\"fas fa-angle-double-left\"></i> Back".html_safe, punches_path, class: ["btn", "btn-sm", "btn-default"] %></p>

@@ -7,7 +7,9 @@ class TimeclockController < ApplicationController
   # Timeclock home page.
   def index
     @punches = current_user.punches.current_week.reverse_chronological
+    @current_week_hours = Calculator.calculate_hours(@punches.reverse)
     @last_week_punches = current_user.punches.previous_week.reverse_chronological
+    @last_week_hours = Calculator.calculate_hours(@last_week_punches.reverse)
   end
 
   # Shows currently logged in users.

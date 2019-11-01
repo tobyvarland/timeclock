@@ -1,10 +1,15 @@
 class PunchesController < ApplicationController
+
+  # Require supervisor privileges.
+  before_action :authorized_as_supervisor,
+                only: [:index, :new, :edit]
+
   before_action :set_punch, only: [:show, :edit, :update, :destroy]
 
   # GET /punches
   # GET /punches.json
   def index
-    @punches = Punch.all
+    @punches = Punch.reverse_chronological.in_open_period
   end
 
   # GET /punches/1
@@ -37,7 +42,7 @@ class PunchesController < ApplicationController
 
     respond_to do |format|
       if @punch.save
-        format.html { redirect_to @punch, notice: 'Punch was successfully created.' }
+        format.html { redirect_to punches_url, notice: 'Successfully added record' }
         format.json { render :show, status: :created, location: @punch }
       else
         format.html { render :new }
@@ -51,7 +56,7 @@ class PunchesController < ApplicationController
   def update
     respond_to do |format|
       if @punch.update(punch_params)
-        format.html { redirect_to @punch, notice: 'Punch was successfully updated.' }
+        format.html { redirect_to punches_url, notice: 'Successfully updated record.' }
         format.json { render :show, status: :ok, location: @punch }
       else
         format.html { render :edit }
@@ -78,6 +83,6 @@ class PunchesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def punch_params
-      params.require(:punch).permit(:user_id, :punch_type, :punch_at)
+      params.require(:punch).permit(:user_id, :punch_type, :punch_at, :edited_by_id, :reason_code_id, :notes)
     end
 end

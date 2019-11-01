@@ -1,0 +1,11 @@
+<li class="list-group-item px-2 py-1 small d-flex flex-row justify-content-between align-items-center <%= list_shift[:current] ? "bg-info text-white" : false %>">
+  <span>
+    <%= list_shift[:start].strftime("%a, %l:%M%P") %>
+    &ndash;
+    <%= list_shift[:end].strftime("%a, %l:%M%P") %>
+  </span>
+  <span>
+    <%= number_with_precision(list_shift[:hours], precision: 2) %>
+    <%= "hr".pluralize(list_shift[:hours]) %>
+  </span>
+</li>

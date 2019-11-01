@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_31_175854) do
+ActiveRecord::Schema.define(version: 2019_10_31_192329) do
 
   create_table "periods", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.date "starts_on", null: false
@@ -29,8 +29,14 @@ ActiveRecord::Schema.define(version: 2019_10_31_175854) do
     t.datetime "updated_at", precision: 6, null: false
     t.datetime "deleted_at"
     t.bigint "period_id", null: false
+    t.bigint "edited_by_id"
+    t.bigint "reason_code_id"
+    t.text "notes"
+    t.datetime "edited_at"
     t.index ["deleted_at"], name: "index_punches_on_deleted_at"
+    t.index ["edited_by_id"], name: "index_punches_on_edited_by_id"
     t.index ["period_id"], name: "index_punches_on_period_id"
+    t.index ["reason_code_id"], name: "index_punches_on_reason_code_id"
     t.index ["user_id"], name: "index_punches_on_user_id"
   end
 
@@ -68,5 +74,7 @@ ActiveRecord::Schema.define(version: 2019_10_31_175854) do
   end
 
   add_foreign_key "punches", "periods"
+  add_foreign_key "punches", "reason_codes"
   add_foreign_key "punches", "users"
+  add_foreign_key "punches", "users", column: "edited_by_id"
 end

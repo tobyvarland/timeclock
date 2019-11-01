@@ -10,7 +10,7 @@ class User < ApplicationRecord
     on_break: "on_break"
   }
   enum access_level: {
-    user: 1,
+    employee: 1,
     supervisor: 2,
     admin: 3
   }
@@ -18,6 +18,10 @@ class User < ApplicationRecord
   # Associations.
   has_many  :punches,
             dependent: :destroy
+  has_many  :edited_punches,
+            class_name: "Punch",
+            foreign_key: "edited_by_id",
+            dependent: :nullify
 
   # Validations.
   validates :employee_number,
@@ -76,9 +80,17 @@ class User < ApplicationRecord
       when "start_break"
         self.status = :on_break
         self.secondary_status_timestamp = punch.punch_at
+        if self.status_timestamp.blank?
+          start_work = self.punches.not_notes.where(punch_type: :start_work).reverse_chronological.first
+          self.status_timestamp = start_work.punch_at
+        end
       when "end_break"
         self.status = :clocked_in
         self.secondary_status_timestamp = nil
+        if self.status_timestamp.blank?
+          start_work = self.punches.not_notes.where(punch_type: :start_work).reverse_chronological.first
+          self.status_timestamp = start_work.punch_at
+        end
       end
     else
       self.status = :clocked_out
