@@ -13,7 +13,7 @@ class ReportsController < ApplicationController
 
   # Loads all non-salary users.
   def load_users
-    @users = User.by_number.without_salary
+    @users = User.by_number #.without_salary
   end
 
   # Sets response format to JSON.
