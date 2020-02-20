@@ -1,0 +1,28 @@
+<tr>
+  <td class="text-center nowrap"><%= punch.punch_at.strftime("%A") %></td>
+  <td class="text-center nowrap"><%= punch.punch_at.strftime("%m/%d/%y") %></td>
+  <td class="text-center nowrap">
+    <%= punch.punch_at.strftime("%I:%M%P") %>
+    <% if ["start_work", "end_work"].include? punch.punch_type %>
+      <br>
+      <small class="text-muted">
+        <% if punch.punch_type == "start_work" %>
+          <%= punch.punch_at.to_clock_in_time.strftime("%I:%M%P") %>
+        <% else %>
+          <%= punch.punch_at.to_clock_out_time.strftime("%I:%M%P") %>
+        <% end %>
+      </small>
+    <% end %>
+  </td>
+  <td class="text-center nowrap <%= class_for_punch_type(punch.punch_type) %>"><%= punch.punch_type.gsub(/_/, ' ').titlecase %></td>
+  <td class="text-left nowrap">
+    <% if punch.editor.blank? %>
+      &nbsp;
+    <% else %>
+      <small class="text-muted">By:</small> <%= punch.editor.name %><br>
+      <small class="text-muted">When:</small> <%= punch.edited_at.strftime("%m/%d/%y %I:%M%P") %><br>
+      <small class="text-muted">Reason:</small> <%= punch.reason_code.code %>
+    <% end %>
+  </td>
+  <td class="text-left"><%= punch.notes %></td>
+</tr>

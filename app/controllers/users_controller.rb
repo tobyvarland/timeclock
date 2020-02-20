@@ -14,6 +14,19 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
+    # History to show.
+    @punches0 = @user.punches.current_week.reverse_chronological
+    @punches1 = @user.punches.weeks_ago(1).reverse_chronological
+    @punches2 = @user.punches.weeks_ago(2).reverse_chronological
+    @punches3 = @user.punches.weeks_ago(3).reverse_chronological
+    @punches4 = @user.punches.weeks_ago(4).reverse_chronological
+    @punches5 = @user.punches.weeks_ago(5).reverse_chronological
+    @calculator0 = Calculator.calculate_hours(@punches0.reverse)
+    @calculator1 = Calculator.calculate_hours(@punches1.reverse)
+    @calculator2 = Calculator.calculate_hours(@punches2.reverse)
+    @calculator3 = Calculator.calculate_hours(@punches3.reverse)
+    @calculator4 = Calculator.calculate_hours(@punches4.reverse)
+    @calculator5 = Calculator.calculate_hours(@punches5.reverse)
   end
 
   # GET /users/new

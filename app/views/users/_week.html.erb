@@ -1,8 +1,8 @@
-<p>Your time card for <%= description %>:</p>
+<p><%= punches.first.period.description %>:</p>
 
 <% if punches.blank? %>
 
-  <p class="small text-muted font-italic">You don't have any records for <%= description %>.</p>
+  <p class="small text-muted font-italic">You don't have any records for the <%= punches.first.period.description %>.</p>
 
 <% else %>
 

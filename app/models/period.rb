@@ -50,6 +50,11 @@ class Period < ApplicationRecord
     end
   end
 
+  # Returns period description.
+  def description
+    "Week of #{self.starts_on.strftime("%m/%d/%Y")} &ndash; #{self.ends_on.strftime("%m/%d/%Y")}".html_safe
+  end
+
   # Class methods.
 
   # Returns period for current week.
@@ -59,7 +64,12 @@ class Period < ApplicationRecord
 
   # Returns period for last week.
   def self.last_week
-    return self.find_for(DateTime.now - 1.week)
+    return self.weeks_ago(1)
+  end
+
+  # Returns period for given number of weeks ago.
+  def self.weeks_ago(weeks)
+    return self.find_for(DateTime.now - weeks.week)
   end
 
   # Finds period for given date.

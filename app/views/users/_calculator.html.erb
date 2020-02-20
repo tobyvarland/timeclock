@@ -1,0 +1,20 @@
+<% if calculator.error %>
+  <div class="card bg-danger text-white mb-3">
+    <div class="card-body p-2 small">
+      Could not calculate hours for the week. Contact payroll for help if necessary.
+    </div>
+  </div>
+<% else %>
+  <div class="card mb-3 bg-dark text-white">
+    <div class="card-body p-2">
+      Hours: <%= number_with_precision(calculator.hours, precision: 2) %>
+      <% if calculator.hours_so_far != 0 %>
+        + <span class="text-info"><%= number_with_precision(calculator.hours_so_far, precision: 2) %>
+        <small>(as of <%= calculator.as_of.strftime("%l:%M%P") %>)</small></span>
+      <% end %>
+    </div>
+    <ul class="list-group list-group-flush text-dark">
+      <%= render partial: "list_shift", collection: calculator.shifts %>
+    </ul>
+  </div>
+<% end %>

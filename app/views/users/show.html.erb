@@ -4,6 +4,13 @@
   </h1>
 </div>
 
-<p class="font-weight-bold">Timeclock History</p>
-
 <p><%= link_to "<i class=\"fas fa-angle-double-left\"></i> Back".html_safe, users_path, class: ["btn", "btn-sm", "btn-default"] %></p>
+
+<h5>Timeclock History <small>(Last 6 Weeks)</small></h5>
+
+<%= render partial: "week", locals: { punches: @punches0, calculator: @calculator0 } unless @punches0.blank? %>
+<%= render partial: "week", locals: { punches: @punches1, calculator: @calculator1 } unless @punches1.blank? %>
+<%= render partial: "week", locals: { punches: @punches2, calculator: @calculator2 } unless @punches2.blank? %>
+<%= render partial: "week", locals: { punches: @punches3, calculator: @calculator3 } unless @punches3.blank? %>
+<%= render partial: "week", locals: { punches: @punches4, calculator: @calculator4 } unless @punches4.blank? %>
+<%= render partial: "week", locals: { punches: @punches5, calculator: @calculator5 } unless @punches5.blank? %>
