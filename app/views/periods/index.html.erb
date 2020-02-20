@@ -1,0 +1,17 @@
+<div class="d-flex flex-row justify-content-between align-items-center my-3">
+  <h1 class="m-0">Manage Periods</h1>
+</div>
+
+<table class="table table-bordered table-striped table-hover table-sm">
+  <thead class="thead-dark">
+    <tr>
+      <th class="text-center w-20">Starting Date</th>
+      <th class="text-center w-20">Ending Date</th>
+      <th class="text-center w-20">Locked?</th>
+      <th class="text-center">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= render partial: "period", collection: @periods %>
+  </tbody>
+</table>

@@ -28,9 +28,13 @@
           <div class="dropdown-menu">
             <%= link_to "View Timeclock", ipad_url, class: "dropdown-item", target: "_blank" %>
             <%= link_to "Edit Records", punches_url, class: "dropdown-item" %>
+            <% if current_user.access_level_before_type_cast >= 3 %>
+              <%= link_to "Edit Periods", periods_url, class: "dropdown-item" %>
+            <% end %>
           </div>
         </li>
       <% end %>
+      <!--
       <% if current_user && current_user.access_level_before_type_cast >= 2 %>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown">
@@ -42,6 +46,7 @@
           </div>
         </li>
       <% end %>
+      -->
       <% if current_user && current_user.access_level_before_type_cast == 3 %>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown">
@@ -58,7 +63,7 @@
     <ul class="navbar-nav ml-auto">
       <% if current_user %>
         <li class="nav-item">
-          <%= link_to "<i class=\"fas fa-power-off\"></i> Logout".html_safe, logout_url, class: "nav-link" %>
+          <%= link_to "<i class=\"fas fa-sign-out-alt\"></i> Logout".html_safe, logout_url, class: "nav-link" %>
         </li>
       <% else %>
         <li class="nav-item">

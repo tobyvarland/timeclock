@@ -13,10 +13,4 @@
     <% end %>
   </td>
   <td class="text-left"><%= punch.notes %></td>
-  <td class="text-center nowrap">
-    <%= link_to '<i class="fas fa-pencil-alt"></i> Edit'.html_safe, edit_punch_path(punch), class: ["btn", "btn-secondary", "btn-sm"] %>
-    <% if current_user.access_level_before_type_cast >= 3 %>
-      <%= link_to '<i class="fas fa-times"></i> Delete'.html_safe, punch, method: :delete, class: ["btn", "btn-danger", "btn-sm"], data: { confirm: "Are you sure you want to delete this record?\n\nIf necessary, IT can restore this record later." } %>
-    <% end %>
-  </td>
 </tr>

@@ -1,0 +1,35 @@
+<div class="d-flex flex-row align-items-center justify-content-between my-3">
+  <h1 class="m-0">
+    <span><%= @period.description %></span>
+  </h1>
+  <div>
+    <%= link_to '<i class="fas fa-file-pdf"></i> Report'.html_safe, "http://pdf.varland.com/timecards/#{@period.id}", target: "_blank", class: ["btn", "btn-danger"] %>
+    <%= form_with(model: @period, remote: true, class: "d-inline") do |form| %>
+      <% if @period.is_closed %>
+          <%= form.hidden_field :is_closed, value: false %>
+          <button class="btn btn-light btn" type="submit"><i class="fas fa-lock-open"></i> Unlock Period</button>
+      <% else %>
+          <%= form.hidden_field :is_closed, value: true %>
+          <button class="btn btn-warning btn" type="submit"><i class="fas fa-lock"></i> Lock Period</button>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+
+<p><%= link_to "<i class=\"fas fa-angle-double-left\"></i> Back".html_safe, periods_path, class: ["btn", "btn-sm", "btn-default"] %></p>
+
+<table class="table table-bordered table-striped table-hover table-sm">
+  <thead class="thead-dark">
+    <tr>
+      <th class="text-left w-15">Employee</th>
+      <th class="text-center w-10">Date</th>
+      <th class="text-center w-10">Time</th>
+      <th class="text-center w-10">Type</th>
+      <th class="text-left w-20">Edited?</th>
+      <th class="text-left">Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= render partial: "punch", collection: @period.punches.reverse_chronological %>
+  </tbody>
+</table>

@@ -1,0 +1,18 @@
+<tr id="period-<%= period.id %>">
+  <td class="text-center nowrap"><%= period.starts_on.strftime("%m/%d/%Y") %></td>
+  <td class="text-center nowrap"><%= period.ends_on.strftime("%m/%d/%Y") %></td>
+  <td class="text-center nowrap"><i class="fas fa-<%= period.is_closed ? 'lock text-success' : 'lock-open text-danger' %>"></i></td>
+  <td class="text-center nowrap">
+    <%= form_with(model: period, remote: true, class: "d-inline") do |form| %>
+        <% if period.is_closed %>
+            <%= form.hidden_field :is_closed, value: false %>
+            <button class="btn btn-light btn-sm" type="submit"><i class="fas fa-lock-open"></i> Unlock Period</button>
+        <% else %>
+            <%= form.hidden_field :is_closed, value: true %>
+            <button class="btn btn-warning btn-sm" type="submit"><i class="fas fa-lock"></i> Lock Period</button>
+        <% end %>
+    <% end %>
+    <%= link_to '<i class="far fa-eye"></i> Details'.html_safe, period, class: ["btn", "btn-primary", "btn-sm"] %>
+    <%= link_to '<i class="fas fa-file-pdf"></i> Report'.html_safe, "http://pdf.varland.com/timecards/#{period.id}", target: "_blank", class: ["btn", "btn-danger", "btn-sm"] %>
+  </td>
+</tr>

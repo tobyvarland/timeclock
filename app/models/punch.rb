@@ -45,6 +45,7 @@ class Punch < ApplicationRecord
   scope :current_week, -> { where("period_id = ?", Period.current.id) }
   scope :previous_week, -> { where("period_id = ?", Period.last_week.id) }
   scope :weeks_ago, ->(weeks) { where("period_id = ?", Period.weeks_ago(weeks).id) unless weeks.blank? }
+  scope :in_period, ->(id) { where("period_id = ?", id) unless id.blank? }
   scope :in_open_period, -> { joins(:period).where(periods: { is_closed: false }) }
 
   # Instance methods.

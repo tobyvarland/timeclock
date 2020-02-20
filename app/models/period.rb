@@ -6,6 +6,8 @@ class Period < ApplicationRecord
   # Associations.
   has_many  :punches,
             dependent: :destroy
+  has_many  :users,
+            through: :punches
 
   # Validations.
   validates :starts_on,

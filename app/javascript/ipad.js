@@ -27,7 +27,7 @@ var iPad = {
   },
 
   handleEnterButton: function() {
-    if (iPad.textBox.val().length >= 3) { iPad.textBox.closest("form").submit(); }
+    if (iPad.textBox.val().length >= 2) { iPad.textBox.closest("form").submit(); }
   },
 
   handleDeleteButton: function() {
