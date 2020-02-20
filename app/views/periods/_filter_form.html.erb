@@ -1,0 +1,21 @@
+<%= form_with url: period_path(@period),
+              class: 'border rounded p-3 mb-3 bg-light',
+              method: 'get' do |f| %>
+                
+  <div class="row">
+    <div class="col">
+      <div class="form-group">
+        <%= f.label :for_user, 'Employee:' %>
+        <%= f.select :for_user, options_for_select(@filterable_users, params[:for_user]), { include_blank: true }, { class: 'custom-select', onchange: 'this.form.submit();' }%>
+      </div>
+    </div>
+  </div>
+  <% unless params[:for_user].blank? %>
+    <div class="row">
+        <div class="col">
+        <%= link_to 'Reset', period_path(@period, reset: 1), class: 'btn btn-secondary btn-sm' %>
+        </div>
+    </div>
+  <% end %>
+
+<% end %>

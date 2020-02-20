@@ -3,6 +3,8 @@
   <%= link_to '<i class="fas fa-plus"></i> Add Record'.html_safe, new_punch_path, class: ["btn", "btn-sm", "btn-success"] %>
 </div>
 
+<%= render partial: "filter_form" %>
+
 <table class="table table-bordered table-striped table-hover table-sm">
   <thead class="thead-dark">
     <tr>

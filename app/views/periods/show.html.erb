@@ -18,6 +18,8 @@
 
 <p><%= link_to "<i class=\"fas fa-angle-double-left\"></i> Back".html_safe, periods_path, class: ["btn", "btn-sm", "btn-default"] %></p>
 
+<%= render partial: "filter_form" %>
+
 <table class="table table-bordered table-striped table-hover table-sm">
   <thead class="thead-dark">
     <tr>
@@ -30,6 +32,6 @@
     </tr>
   </thead>
   <tbody>
-    <%= render partial: "punch", collection: @period.punches.reverse_chronological %>
+    <%= render partial: "punch", collection: @punches %>
   </tbody>
 </table>

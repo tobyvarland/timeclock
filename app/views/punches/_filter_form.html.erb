@@ -1,0 +1,27 @@
+<%= form_with url: punches_path,
+              class: 'border rounded p-3 mb-3 bg-light',
+              method: 'get' do |f| %>
+                
+  <div class="row">
+    <div class="col">
+      <div class="form-group">
+        <%= f.label :in_period, 'Period:' %>
+        <%= f.select :in_period, options_for_select(@filterable_periods, params[:in_period]), { include_blank: true }, { class: 'custom-select', onchange: 'this.form.submit();' }%>
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-group">
+        <%= f.label :for_user, 'Employee:' %>
+        <%= f.select :for_user, options_for_select(@filterable_users, params[:for_user]), { include_blank: true }, { class: 'custom-select', onchange: 'this.form.submit();' }%>
+      </div>
+    </div>
+  </div>
+  <% unless params[:for_user].blank? && params[:in_period].blank? %>
+    <div class="row">
+      <div class="col">
+        <%= link_to 'Reset', punches_url(:reset => 1), class: 'btn btn-secondary btn-sm' %>
+      </div>
+    </div>
+  <% end %>
+
+<% end %>
