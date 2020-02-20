@@ -6,7 +6,7 @@ class Calculator
     end
     rounded_start = shift_start.to_clock_in_time # Time.at((shift_start.change(:sec => 0).to_f / 15.minutes).ceil * 15.minutes).utc
     rounded_end = shift_end.to_clock_out_time # Time.at((shift_end.change(:sec => 0).to_f / 15.minutes).floor * 15.minutes).utc
-    return ((rounded_end - rounded_start) / 1.hour)
+    return [((rounded_end - rounded_start) / 1.hour), 0].max
   end
 
   def self.calculate_hours(punches)
@@ -16,6 +16,7 @@ class Calculator
     hours_so_far = 0
     status = :out
     error = false
+    error_msg = nil
     shift_start = nil
     shift_end = nil
     as_of = nil
@@ -25,7 +26,7 @@ class Calculator
     punches.each do |p|
 
       # Ignore punches that are only notes.
-      next if p.punch_type == :notes
+      next if p.punch_type == "notes"
 
       # Look for start work if status is currently out. Store shift starting time and update status.
       if status == :out
@@ -33,6 +34,7 @@ class Calculator
         # Flag error if invalid punch type found.
         if p.punch_type != "start_work"
           error = true
+          error_msg = "Found non start_work when clocked out."
           break
         end
 
@@ -45,6 +47,7 @@ class Calculator
         # Flag error if invalid punch type found.
         if !["start_break", "end_work"].include? p.punch_type
           error = true
+          error_msg = "Found non start_break/end_work when clocked in."
           break
         end
 
@@ -64,6 +67,7 @@ class Calculator
         # Flag error if invalid punch type found.
         if p.punch_type != "end_break"
           error = true
+          error_msg = "Found non end_break when on break."
           break
         end
 
@@ -81,7 +85,7 @@ class Calculator
     end
 
     # Return hours and error status.
-    return OpenStruct.new({ hours: hours, hours_so_far: hours_so_far, as_of: as_of, shifts: shifts, error: error })
+    return OpenStruct.new({ hours: hours, hours_so_far: hours_so_far, as_of: as_of, shifts: shifts, error: error, error_msg: error_msg })
 
   end
 
