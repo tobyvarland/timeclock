@@ -18,7 +18,7 @@ class PunchesController < ApplicationController
     filters_to_cookies([:in_period, :for_user])
     @punches = apply_scopes(Punch).includes(:user).reverse_chronological.in_open_period
     @filterable_periods = Period.where(id: @punches.pluck(:period_id).uniq).reverse_chronological.map {|p| [p.description, p.id]}
-    @filterable_users = User.where(id: @punches.pluck(:user_id).uniq).by_number.map {|u| [u.name, u.id]}
+    @filterable_users = User.where(id: @punches.pluck(:user_id).uniq).by_number.map {|u| ["#{u.employee_number} – #{u.name}", u.id]}
   end
 
   # GET /punches/1
