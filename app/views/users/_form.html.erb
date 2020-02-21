@@ -15,7 +15,7 @@
 
       <div class="form-group">
         <%= form.label :employee_number, "Employee #: #{required_field_indicator}".html_safe %>
-        <%= form.number_field :employee_number, class: "form-control", required: true %>
+        <%= form.number_field :employee_number, class: "form-control", required: true, autofocus: true %>
       </div>
 
       <div class="form-group">
