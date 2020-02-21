@@ -1,5 +1,26 @@
 <div class="w-35">
-  <%= form_with(url: login_url, method: "post", class: ["bg-light", "border", "rounded", "shadow-sm", "p-3", "clearfix"]) do %>
+  <% flash.each do |message_type, message| %>
+    <%
+      case message_type
+      when "notice"
+        message_type = "primary"
+      when "alert"
+        message_type = "warning"
+      when "error"
+        message_type = "danger"
+      end
+    %>
+    <div class="alert alert-<%= message_type %> mb-3 px-2 py-1 small font-weight-bold">
+      <%= message.html_safe %>
+      <button type="button"
+              class="close"
+              data-dismiss="alert"
+              aria-label="Close">
+        <span aria-hidden="true"><i class="fas fa-times"></i></span>
+      </button>
+    </div>
+  <% end %>
+  <%= form_with(url: login_url, method: "post", local: true, class: ["bg-light", "border", "rounded", "shadow-sm", "p-3", "clearfix"]) do %>
     <div class="form-group">
       <label for="username">System i Username: <%= required_field_indicator.html_safe %></label>
       <%= text_field_tag(:username, "", class: "form-control", required: true, autofocus: true) %>

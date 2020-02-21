@@ -3,16 +3,18 @@
     <span><%= @period.description %></span>
   </h1>
   <div>
-    <%= link_to '<i class="fas fa-file-pdf"></i> Report'.html_safe, "http://pdf.varland.com/timecards/#{@period.id}", target: "_blank", class: ["btn", "btn-danger"] %>
-    <%= form_with(model: @period, remote: true, class: "d-inline") do |form| %>
-      <% if @period.is_closed %>
-          <%= form.hidden_field :is_closed, value: false %>
-          <button class="btn btn-light btn" type="submit"><i class="fas fa-lock-open"></i> Unlock Period</button>
-      <% else %>
-          <%= form.hidden_field :is_closed, value: true %>
-          <button class="btn btn-warning btn" type="submit"><i class="fas fa-lock"></i> Lock Period</button>
+    <% unless @period.is_current? %>
+      <%= form_with(model: @period, remote: true, class: "d-inline") do |form| %>
+        <% if @period.is_closed %>
+            <%= form.hidden_field :is_closed, value: false %>
+            <button class="btn btn-light btn" type="submit"><i class="fas fa-lock-open"></i> Unlock Period</button>
+        <% else %>
+            <%= form.hidden_field :is_closed, value: true %>
+            <button class="btn btn-warning btn" type="submit"><i class="fas fa-lock"></i> Lock Period</button>
+        <% end %>
       <% end %>
     <% end %>
+    <%= link_to '<i class="fas fa-file-pdf text-danger"></i> Report'.html_safe, "http://pdf.varland.com/timecards?period=#{@period.id}", target: "_blank", class: ["btn", "btn-light"] %>
   </div>
 </div>
 

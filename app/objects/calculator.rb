@@ -2,10 +2,12 @@ class Calculator
 
   def self.calculate_shift_hours(shift_start, shift_end = nil)
     if shift_end.blank?
-      shift_end = DateTime.now.localtime.strftime("%Y-%m-%dT%H:%M:%S").to_time(:utc)
+      shift_end = DateTime.current.in_time_zone
     end
-    rounded_start = shift_start.to_clock_in_time # Time.at((shift_start.change(:sec => 0).to_f / 15.minutes).ceil * 15.minutes).utc
-    rounded_end = shift_end.to_clock_out_time # Time.at((shift_end.change(:sec => 0).to_f / 15.minutes).floor * 15.minutes).utc
+    rounded_start = VarlandTimeclock.clock_in_time(shift_start)
+    rounded_end = VarlandTimeclock.clock_out_time(shift_end)
+    puts "********** Start: #{rounded_start} (#{rounded_start.class}) **********"
+    puts "********** End: #{rounded_end} (#{rounded_end.class}) **********"
     return [((rounded_end - rounded_start) / 1.hour), 0].max
   end
 
@@ -79,7 +81,7 @@ class Calculator
     end
 
     if status != :out
-      as_of = DateTime.now.localtime.strftime("%Y-%m-%dT%H:%M:%S").to_time(:utc)
+      as_of = DateTime.current
       hours_so_far = self.calculate_shift_hours(shift_start, as_of)
       shifts << { start: shift_start, end: as_of, hours: hours_so_far, current: true }
     end

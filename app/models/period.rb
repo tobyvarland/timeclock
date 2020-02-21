@@ -57,11 +57,16 @@ class Period < ApplicationRecord
     "Week of #{self.starts_on.strftime("%m/%d/%Y")} &ndash; #{self.ends_on.strftime("%m/%d/%Y")}".html_safe
   end
 
+  # Returns whether or not period is current.
+  def is_current?
+    return self.ends_on >= Time.zone.today
+  end
+
   # Class methods.
 
   # Returns period for current week.
   def self.current
-    return self.find_for(DateTime.now)
+    return self.find_for(DateTime.current)
   end
 
   # Returns period for last week.
@@ -71,7 +76,7 @@ class Period < ApplicationRecord
 
   # Returns period for given number of weeks ago.
   def self.weeks_ago(weeks)
-    return self.find_for(DateTime.now - weeks.week)
+    return self.find_for(DateTime.current - weeks.week)
   end
 
   # Finds period for given date.

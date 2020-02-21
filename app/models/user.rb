@@ -50,15 +50,14 @@ class User < ApplicationRecord
 
   # Authenticates via System i.
   def ibm_authenticate(password)
-    # uri = URI.parse("http://as400railsapi.varland.com/v1/auth")
-    # http = Net::HTTP.new(uri.host, uri.port)
-    # request = Net::HTTP::Post.new(uri.request_uri)
-    # request.body = "user=#{self.username}&password=#{password}"
-    # response = http.request(request)
-    # return false unless response.code.to_s == '200'
-    # result = JSON.parse(response.body)
-    # return result['result']    
-    return true
+    uri = URI.parse("http://as400api.varland.com/v1/as400auth")
+    http = Net::HTTP.new(uri.host, uri.port)
+    request = Net::HTTP::Post.new(uri.request_uri)
+    request.body = "username=#{self.username}&password=#{password}"
+    response = http.request(request)
+    return false unless response.code.to_s == '200'
+    result = JSON.parse(response.body)
+    return result
   end
 
   # Updates user status. Intended to be called whenever a punch for this user is saved.

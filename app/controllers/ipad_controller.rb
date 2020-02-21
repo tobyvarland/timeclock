@@ -9,7 +9,7 @@ class IpadController < ApplicationController
 
   # Index action. Shows available actions.
   def index
-    @new_punch = ipad_current_user.punches.new(punch_at: Time.now)
+    @new_punch = ipad_current_user.punches.new(punch_at: Time.current)
   end
 
   # Time card page. Shows current week time card.

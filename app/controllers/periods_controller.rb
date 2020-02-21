@@ -1,7 +1,8 @@
 class PeriodsController < ApplicationController
 
     # Require admin privileges.
-    # before_action :authorized_as_admin
+    before_action :authorized_as_admin,
+                  unless: :json_request?
 
     before_action :set_period, only: [:show, :update]
 
@@ -38,6 +39,10 @@ class PeriodsController < ApplicationController
     end
   
     private
+
+      def json_request?
+        request.format.json?
+      end
 
       # Use callbacks to share common setup or constraints between actions.
       def set_period
