@@ -20,4 +20,5 @@ require("timeclock")
 
 import 'bootstrap'
 import './src/application.scss'
+import './src/timeclock.scss'
 import "@fortawesome/fontawesome-free/js/all"

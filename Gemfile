@@ -56,6 +56,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'acts_as_paranoid', '~> 0.6.0'
 gem 'paper_trail'
 gem 'has_scope'
+gem 'bootstrap', '~> 4.4.1'
 
 gem 'capistrano', '~> 3.11'
 gem 'capistrano-rails', '~> 1.4'
