@@ -1,9 +1,9 @@
-<%= form_with(model: punch, remote: true, class: ["bg-light", "border", "mb-3", "shadow-sm", "p-3", "clearfix"]) do |form| %>
+<%= form_with(model: punch, local: true, class: ["bg-light", "border", "mb-3", "shadow-sm", "p-3", "clearfix"]) do |form| %>
 
   <%= form.hidden_field :edited_by_id, value: current_user.id %>
 
   <% if punch.errors.any? %>
-    <div class="alert alert-danger small">
+    <div class="alert alert-danger small font-weight-bold">
       <p class="my-0"><%= pluralize(punch.errors.count, "error") %> prevented this record from being saved:</p>
       <ul class="my-0">
         <% punch.errors.full_messages.each do |message| %>
