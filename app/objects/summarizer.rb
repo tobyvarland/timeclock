@@ -13,10 +13,11 @@ class Summarizer
   attr_reader :shifts
 
   # Constructor. Accepts collection of punches for a given user in a given period.
-  def initialize(punches)
+  def initialize(punches, use_rounding = true)
 
-    # Save collection of punches.
+    # Save collection of punches and options.
     @punches = punches
+    @use_rounding = use_rounding
 
     # Calculate stats for punches.
     self.calc_stats
@@ -167,8 +168,8 @@ protected
   # Calculates hours for a given shift.
   def calculate_shift_hours(shift_start, shift_end)
     hours_by_shift = []
-    rounded_start = VarlandTimeclock.clock_in_time(shift_start)
-    rounded_end = VarlandTimeclock.clock_out_time(shift_end)
+    rounded_start = @use_rounding ? VarlandTimeclock.clock_in_time(shift_start) : shift_start
+    rounded_end = @use_rounding ? VarlandTimeclock.clock_out_time(shift_end) : shift_end
     case rounded_start.hour
     when 0..6
       shift = 3
