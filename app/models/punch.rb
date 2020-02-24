@@ -55,6 +55,7 @@ class Punch < ApplicationRecord
   # Requires labor entry on System i if clocking out.
   def require_labor_if_end_work
     return unless self.punch_type == "end_work"
+    return if self.period.blank?
     return if self.user.blank?
     return if self.user.employee_number >= 600
     return unless self.reason_code.blank?

@@ -45,7 +45,11 @@ class PunchesController < ApplicationController
       if @punch.save
         redirect_to ipad_logout_url, notice: @punch.description
       else
-        redirect_to ipad_url, flash: { error: "There was an error processing your request. Contact IT for help." }
+        msg = "There was an error processing your request. Contact IT for help."
+        if @punch.errors.count > 0
+          msg = @punch.errors.full_messages[0]
+        end
+        redirect_to ipad_url, flash: { error: msg }
       end
       return
     end
