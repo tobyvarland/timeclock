@@ -14,7 +14,8 @@
         <% end %>
       <% end %>
     <% end %>
-    <%= link_to '<i class="fas fa-file-pdf text-danger"></i> Report'.html_safe, "http://pdf.varland.com/timecards?period=#{@period.id}", target: "_blank", class: ["btn", "btn-light"] %>
+    <%= link_to '<i class="fas fa-file-pdf text-danger"></i> Employee Report'.html_safe, "http://pdf.varland.com/timecards?period=#{@period.id}", target: "_blank", class: ["btn", "btn-light"] %>
+    <%= link_to '<i class="fas fa-file-pdf text-danger"></i> Easter Seals Report'.html_safe, "http://pdf.varland.com/timecards?period=#{@period.id}&easter=1", target: "_blank", class: ["btn", "btn-light"] %>
   </div>
 </div>
 
