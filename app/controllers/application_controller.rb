@@ -17,7 +17,8 @@ class ApplicationController < ActionController::Base
 
   # Gets reference to current user.
   def current_user    
-    User.find_by(id: session[:user_id])  
+    id = session[:user_id].blank? ? cookies[:user_id] : session[:user_id]
+    User.find_by(id: id)  
   end
 
   # Determines if user is logged in.

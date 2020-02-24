@@ -29,6 +29,10 @@
       <label for="password">System i Password: <%= required_field_indicator.html_safe %></label>
       <%= password_field_tag(:password, "", class: "form-control", required: true) %>
     </div>
+    <div class="custom-control custom-checkbox mb-3">
+      <%= check_box_tag(:remember_me, true, true, class: "custom-control-input") %>
+      <label class="custom-control-label" for="remember_me">Keep me signed in on this computer</label>
+    </div>
     <button type="submit" class="btn btn-primary float-right"><i class="fas fa-check"></i> Login</button>
   <% end %>
 </div>
