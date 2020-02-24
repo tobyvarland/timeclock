@@ -53,4 +53,23 @@ class ApplicationController < ActionController::Base
     redirect_to(ipad_employee_number_url) unless ipad_logged_in?
   end
 
+  # Persist filters to cookies.
+  def filters_to_cookies(filters, global = false)
+
+    filters.each do |f|
+      cookie_name = global ? f : "#{params[:controller]}_#{params[:action]}_#{f}"
+      if params[:reset]
+        cookies[cookie_name] = ""
+      else
+        if params[f]
+          cookies[cookie_name] = { value: params[f], expires: 1.hour.from_now }
+        else
+          if cookies[cookie_name]
+            params[f] = cookies[cookie_name]
+          end
+        end
+      end
+    end
+  end
+
 end

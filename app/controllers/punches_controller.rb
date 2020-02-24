@@ -17,8 +17,9 @@ class PunchesController < ApplicationController
   def index
     filters_to_cookies([:in_period, :for_user])
     @punches = apply_scopes(Punch).includes(:user).reverse_chronological.in_open_period
-    @filterable_periods = Period.where(id: @punches.pluck(:period_id).uniq).reverse_chronological.map {|p| [p.description, p.id]}
-    @filterable_users = User.where(id: @punches.pluck(:user_id).uniq).by_number.map {|u| ["#{u.employee_number} – #{u.name}", u.id]}
+    @unscoped_punches = Punch.in_open_period
+    @filterable_periods = Period.where(id: @unscoped_punches.pluck(:period_id).uniq).reverse_chronological.map {|p| [p.description, p.id]}
+    @filterable_users = User.where(id: @unscoped_punches.pluck(:user_id).uniq).by_number.map {|u| ["#{u.employee_number} – #{u.name}", u.id]}
   end
 
   # GET /punches/1
@@ -94,23 +95,6 @@ class PunchesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def punch_params
       params.require(:punch).permit(:user_id, :punch_type, :punch_at, :edited_by_id, :reason_code_id, :notes)
-    end
-
-    # Persist filters to cookies.
-    def filters_to_cookies(filters)
-      filters.each do |f|
-        if params[:reset]
-          cookies[f] = ""
-        else
-          if params[f]
-            cookies[f] = { value: params[f], expires: 1.hour.from_now }
-          else
-            if cookies[f]
-              params[f] = cookies[f]
-            end
-          end
-        end
-      end
     end
 
 end

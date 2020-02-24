@@ -21,7 +21,7 @@ class PeriodsController < ApplicationController
     def show
       filters_to_cookies([:for_user])
       @punches = apply_scopes(@period.punches).includes(:user).reverse_chronological
-      @filterable_users = User.where(id: @punches.pluck(:user_id).uniq).by_number.map {|u| ["#{u.employee_number} – #{u.name}", u.id]}
+      @filterable_users = User.where(id: @period.punches.pluck(:user_id).uniq).by_number.map {|u| ["#{u.employee_number} – #{u.name}", u.id]}
     end
   
     # PATCH/PUT /periods/1
@@ -52,23 +52,6 @@ class PeriodsController < ApplicationController
       # Never trust parameters from the scary internet, only allow the white list through.
       def period_params
         params.require(:period).permit(:is_closed)
-      end
-
-      # Persist filters to cookies.
-      def filters_to_cookies(filters)
-        filters.each do |f|
-          if params[:reset]
-            cookies[f] = ""
-          else
-            if params[f]
-              cookies[f] = { value: params[f], expires: 1.hour.from_now }
-            else
-              if cookies[f]
-                params[f] = cookies[f]
-              end
-            end
-          end
-        end
       end
 
 end
