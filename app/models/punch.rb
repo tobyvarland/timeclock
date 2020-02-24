@@ -56,7 +56,7 @@ class Punch < ApplicationRecord
   def require_labor_if_end_work
     return unless self.punch_type == "end_work"
     return if self.user.blank?
-    return if self.user.employee_number >= 1000
+    return if self.user.employee_number >= 600
     return unless self.reason_code.blank?
     target_time = self.punch_at - 15.minutes
     shift = nil
