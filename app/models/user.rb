@@ -50,7 +50,7 @@ class User < ApplicationRecord
 
   # Authenticates via System i.
   def ibm_authenticate(password)
-    uri = URI.parse("http://as400api.varland.com/v1/as400auth")
+    uri = URI.parse("http://as400api.varland.com/v1/as400_auth")
     http = Net::HTTP.new(uri.host, uri.port)
     request = Net::HTTP::Post.new(uri.request_uri)
     request.body = "username=#{self.username}&password=#{password}"
