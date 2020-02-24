@@ -9,6 +9,12 @@ class ApplicationController < ActionController::Base
   helper_method :ipad_current_user
   helper_method :ipad_logged_in?
 
+  # Sets auto refresh value for meta tag.
+  def auto_refresh(delay = 30)
+    @auto_refresh_delay = delay
+    render
+  end
+
   # Gets reference to current user.
   def current_user    
     User.find_by(id: session[:user_id])  
