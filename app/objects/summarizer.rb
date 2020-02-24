@@ -151,13 +151,14 @@ protected
         end
 
         # Change status and store shift start time.
+        current_shift_punches << p
         status = :in
 
       end
 
     end
 
-    # If no clocked out and end of period, raise error.
+    # If not clocked out and end of period, raise error.
     if status != :out
       @error = true
       @error_msg = "Employee not clocked out @ end of period."
