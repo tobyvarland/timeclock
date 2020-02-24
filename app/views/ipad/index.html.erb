@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-12"><p class="font-weight-bold text-center mt-3 mb-0"><%= ipad_current_user.name %></p></div>
+  <div class="col-12"><h1 class="font-weight-bold text-center mt-4 mb-3"><%= ipad_current_user.name %></h1></div>
 </div>
 <div class="row">
   <div class="col-6 offset-3">
@@ -15,6 +15,6 @@
     <hr>
     <%= link_to("<i class=\"fas fa-clipboard-list\"></i> View Time Card".html_safe, ipad_card_url, class: ["btn", "btn-secondary", "btn-block", "btn-lg"]) %>
     <%= link_to("<i class=\"fas fa-clock\"></i> Clocked in Right Now".html_safe, ipad_now_url, class: ["btn", "btn-secondary", "btn-block", "btn-lg", "mt-3"]) %>
-    <%= link_to("<i class=\"fas fa-sign-out-alt\"></i> Logout".html_safe, ipad_logout_url, method: :post, class: ["btn", "btn-secondary", "btn-block", "btn-lg", "mt-3"]) %>
+    <%= link_to("<i class=\"fas fa-sign-out-alt\"></i> Logout".html_safe, ipad_logout_url, method: :post, class: ["logout-button", "btn", "btn-secondary", "btn-block", "btn-lg", "mt-3"]) %>
   </div>
 </div>

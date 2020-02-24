@@ -5,6 +5,27 @@ var iPad = {
   updateClockInterval: null,
   keypadButtonSelector: '.keypad-button',
   textBox: null,
+  autoLogoutTimeout: null,
+  delayBeforeLogout: 5000,
+
+  setupAutoLogout: function() {
+    var $body = $("body");
+    if ($body.data('controller') == 'ipad' && $body.data('action') == 'index') {
+      iPad.autoLogoutTimeout = setTimeout(iPad.autoLogout, iPad.delayBeforeLogout);
+      $(document).on("mousemove", function(event) {
+        clearTimeout(iPad.autoLogoutTimeout);
+        iPad.autoLogoutTimeout = setTimeout(iPad.autoLogout, iPad.delayBeforeLogout);
+      });
+      $(document).on("touchstart", function(event) {
+        clearTimeout(iPad.autoLogoutTimeout);
+        iPad.autoLogoutTimeout = setTimeout(iPad.autoLogout, iPad.delayBeforeLogout);
+      });
+    }
+  },
+
+  autoLogout: function() {
+    $('.logout-button')[0].click();
+  },
 
   deregisterKeypress: function() {
     $(document).off('keydown');
@@ -175,4 +196,5 @@ $(document).on('turbolinks:load', function() {
   iPad.updateClock();
   iPad.updateClockInterval = setInterval(iPad.updateClock, 500);
   iPad.setupKeypadButtons();
+  iPad.setupAutoLogout();
 });
