@@ -48,6 +48,9 @@ class PunchesController < ApplicationController
         msg = "There was an error processing your request. Contact IT for help."
         if @punch.errors.count > 0
           msg = @punch.errors.full_messages[0]
+          if msg[-1] != "."
+            msg += "."
+          end
         end
         redirect_to ipad_url, flash: { error: msg }
       end
