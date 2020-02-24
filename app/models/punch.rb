@@ -32,6 +32,7 @@ class Punch < ApplicationRecord
             presence: true
   validate  :require_open_period
   validate  :require_notes_if_reason_code
+  validate  :require_labor_if_end_work
   
   # Callbacks.
   after_save        :update_user_status
@@ -50,6 +51,29 @@ class Punch < ApplicationRecord
   scope :in_open_period, -> { joins(:period).where(periods: { is_closed: false }) }
 
   # Instance methods.
+
+  # Requires labor entry on System i if clocking out.
+  def require_labor_if_end_work
+    return unless self.punch_type == "end_work"
+    return if self.user.blank?
+    return unless self.reason_code.blank?
+    target_time = self.punch_at - 15.minutes
+    shift = nil
+    case target_time.hour
+    when 0..6
+      shift = 3
+      target_time -= 8.hours
+    when 7..14
+      shift = 1
+    when 15..22
+      shift = 2
+    when 23
+      shift = 3
+    end
+    unless self.user.labor_entered? target_time, shift
+      errors.add(:base, "Not allowed to clock out without entering labor on the System i for #{shift}#{shift.ordinal} shift on #{target_time.strftime("%m/%d")}")
+    end
+  end
 
   # Requires notes if reason code requires notes.
   def require_notes_if_reason_code

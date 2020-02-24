@@ -48,6 +48,18 @@ class User < ApplicationRecord
   
   # Instance methods.
 
+  # Checks labor entry on System i for given date and shift.
+  def labor_entered?(date, shift)
+    uri = URI.parse("http://as400api.varland.com/v1/labor_entry?employee=#{self.employee_number}&shift=#{shift}&date=#{date.strftime("%Y-%m-%d")}")
+    puts uri
+    http = Net::HTTP.new(uri.host, uri.port)
+    request = Net::HTTP::Get.new(uri.request_uri)
+    response = http.request(request)
+    return true unless response.code.to_s == '200'
+    result = JSON.parse(response.body)
+    return result
+  end
+
   # Authenticates via System i.
   def ibm_authenticate(password)
     uri = URI.parse("http://as400api.varland.com/v1/as400_auth")
