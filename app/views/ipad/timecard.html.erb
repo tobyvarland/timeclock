@@ -5,6 +5,7 @@
       &raquo;
       Time Card for Week of <%= Period.current.starts_on.strftime("%m/%d/%y") %> &ndash; <%= Period.current.ends_on.strftime("%m/%d/%y") %>
     </p>
+    <%= link_to("Logout", ipad_logout_url, method: :post, class: ["logout-button", "d-none"]) %>
     <p>
       <%= link_to("<i class=\"fas fa-times\"></i>".html_safe, ipad_url, class: ["btn", "btn-sm", "btn-danger"]) %>
     </p>

@@ -10,14 +10,19 @@ var iPad = {
 
   setupAutoLogout: function() {
     var $body = $("body");
-    if ($body.data('controller') == 'ipad' && $body.data('action') == 'index') {
+    if ($body.data('controller') == 'ipad' && ($body.data('action') == 'index' || $body.data('action') == 'timecard')) {
       iPad.autoLogoutTimeout = setTimeout(iPad.autoLogout, iPad.delayBeforeLogout);
+      $(document).on("click", "a", function(event) {
+        clearTimeout(iPad.autoLogoutTimeout);
+      });
       $(document).on("mousemove", function(event) {
         clearTimeout(iPad.autoLogoutTimeout);
         iPad.autoLogoutTimeout = setTimeout(iPad.autoLogout, iPad.delayBeforeLogout);
       });
       $(document).on("touchstart", function(event) {
         clearTimeout(iPad.autoLogoutTimeout);
+      });
+      $(document).on("touchend", function(event) {
         iPad.autoLogoutTimeout = setTimeout(iPad.autoLogout, iPad.delayBeforeLogout);
       });
     }
@@ -103,7 +108,6 @@ var iPad = {
 
     // Setup button clicks.
     $(iPad.keypadButtonSelector).on("click", function(event) {
-      console.log("Handling button event.");
       event.preventDefault();
       var button = $(this);
       var key = button.data("key");

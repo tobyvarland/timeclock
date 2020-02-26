@@ -47,7 +47,7 @@ class PunchesController < ApplicationController
 
     if params[:source].present? && params[:source] == "ipad"
       if @punch.save
-        redirect_to ipad_logout_url, notice: @punch.description
+        redirect_to ipad_card_url, notice: @punch.description
       else
         msg = "There was an error processing your request. Contact IT for help."
         if @punch.errors.count > 0
