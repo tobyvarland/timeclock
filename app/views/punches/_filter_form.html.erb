@@ -1,5 +1,5 @@
 <%= form_with url: punches_path,
-              class: 'border rounded p-3 mb-3 bg-light',
+              class: 'border p-3 mb-3 bg-light shadow-sm',
               method: 'get' do |f| %>
                 
   <div class="row">
@@ -15,8 +15,14 @@
         <%= f.select :for_user, options_for_select(@filterable_users, params[:for_user]), { include_blank: true }, { class: 'custom-select', onchange: 'this.form.submit();' }%>
       </div>
     </div>
+    <div class="col">
+      <div class="form-group">
+        <%= f.label :with_reason_code, 'Reason Code:' %>
+        <%= f.select :with_reason_code, options_for_select(@filterable_codes, params[:with_reason_code]), { include_blank: true }, { class: 'custom-select', onchange: 'this.form.submit();' }%>
+      </div>
+    </div>
   </div>
-  <% unless params[:for_user].blank? && params[:in_period].blank? %>
+  <% unless params[:for_user].blank? && params[:in_period].blank? && params[:with_reason_code].blank? %>
     <div class="row">
       <div class="col">
         <%= link_to 'Reset', punches_url(:reset => 1), class: 'btn btn-secondary btn-sm' %>

@@ -1,23 +1,38 @@
-<div class="d-flex flex-row justify-content-between align-items-center my-3">
-  <h1 class="m-0">Manage Records</h1>
-  <%= link_to '<i class="fas fa-plus"></i> Add Record'.html_safe, new_punch_path, class: ["btn", "btn-sm", "btn-success"] %>
+<div class="row">
+  <div class="col-12 col-md-10">
+
+    <div class="d-flex flex-row justify-content-between align-items-center my-3">
+      <h1 class="m-0">Manage Records</h1>
+      <!--<%= link_to '<i class="fas fa-plus"></i> Add Record'.html_safe, new_punch_path, class: ["btn", "btn-sm", "btn-success"] %>-->
+    </div>
+
+    <%= render partial: "filter_form" %>
+
+    <table class="table table-bordered table-striped table-hover table-sm">
+      <thead class="thead-dark">
+        <tr>
+          <th class="text-left w-15">Employee</th>
+          <th class="text-center w-10">Date</th>
+          <th class="text-center w-10">Time</th>
+          <th class="text-center w-10">Type</th>
+          <th class="text-left w-20">Edited?</th>
+          <th class="text-left">Notes</th>
+          <th class="text-center w-10">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <%= render partial: "punch", collection: @punches %>
+      </tbody>
+    </table>
+
+  </div>
+  <div class="col-12 col-md-2">
+
+    <div class="d-flex flex-row justify-content-between align-items-center my-3">
+      <h1 class="m-0">Add Record</h1>
+    </div>
+
+    <%= render partial: "add_form" %>
+
+  </div>
 </div>
-
-<%= render partial: "filter_form" %>
-
-<table class="table table-bordered table-striped table-hover table-sm">
-  <thead class="thead-dark">
-    <tr>
-      <th class="text-left w-15">Employee</th>
-      <th class="text-center w-10">Date</th>
-      <th class="text-center w-10">Time</th>
-      <th class="text-center w-10">Type</th>
-      <th class="text-left w-20">Edited?</th>
-      <th class="text-left">Notes</th>
-      <th class="text-center w-10">Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <%= render partial: "punch", collection: @punches %>
-  </tbody>
-</table>

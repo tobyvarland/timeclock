@@ -11,15 +11,19 @@ class PunchesController < ApplicationController
             only: :index
   has_scope :for_user,
             only: :index
+  has_scope :with_reason_code,
+            only: :index
 
   # GET /punches
   # GET /punches.json
   def index
-    filters_to_cookies([:in_period, :for_user])
+    filters_to_cookies([:in_period, :for_user, :with_reason_code])
     @punches = apply_scopes(Punch).includes(:user).reverse_chronological.in_open_period
     @unscoped_punches = Punch.in_open_period
     @filterable_periods = Period.where(id: @unscoped_punches.pluck(:period_id).uniq).reverse_chronological.map {|p| [p.description, p.id]}
     @filterable_users = User.where(id: @unscoped_punches.pluck(:user_id).uniq).by_number.map {|u| ["#{u.employee_number} – #{u.name}", u.id]}
+    @filterable_codes = ReasonCode.where(id: @unscoped_punches.pluck(:reason_code_id).uniq).order(:code).map {|r| [r.code, r.id]}
+    @punch = Punch.new
   end
 
   # GET /punches/1

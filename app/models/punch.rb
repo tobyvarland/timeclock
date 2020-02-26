@@ -49,6 +49,7 @@ class Punch < ApplicationRecord
   scope :in_period, ->(id) { where("period_id = ?", id) unless id.blank? }
   scope :for_user, ->(id) { where("user_id = ?", id) unless id.blank? }
   scope :in_open_period, -> { joins(:period).where(periods: { is_closed: false }) }
+  scope :with_reason_code, ->(id) { where("reason_code_id = ?", id) unless id.blank? }
 
   # Instance methods.
 
