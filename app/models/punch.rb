@@ -88,9 +88,10 @@ class Punch < ApplicationRecord
 
   # Update edited_at if record is edited.
   def update_edit_timestamp
-    if self.edited_by_id_changed? || self.notes_changed? || self.reason_code_id_changed?
+    return if self.edited_by_id.blank? && self.notes.blank? && self.reason_code_id.blank?
+    #if self.edited_by_id_changed? || self.notes_changed? || self.reason_code_id_changed?
       self.edited_at = DateTime.current
-    end
+    #end
   end
 
   # Ensures period is open.
