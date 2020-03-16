@@ -34,19 +34,6 @@
           </div>
         </li>
       <% end %>
-      <!--
-      <% if current_user && current_user.access_level_before_type_cast >= 2 %>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown">
-            <i class="fas fa-paperclip"></i> Reports
-          </a>
-          <div class="dropdown-menu">
-            <%= link_to "Current Week", reports_current_url, class: "dropdown-item", target: "_blank" %>
-            <%= link_to "Last Week", reports_previous_url, class: "dropdown-item", target: "_blank" %>
-          </div>
-        </li>
-      <% end %>
-      -->
       <% if current_user && current_user.access_level_before_type_cast == 3 %>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown">
