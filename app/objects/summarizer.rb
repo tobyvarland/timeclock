@@ -44,6 +44,13 @@ protected
     current_shift_punches = nil
     in_overtime = false
 
+    # If no punches, store error.
+    if @punches.blank? || @punches.length == 0
+      @error = true
+      @error_msg = "Employee has no records in period."
+      return
+    end
+
     # Loop through punches to calculate time.
     @punches.each do |p|
 

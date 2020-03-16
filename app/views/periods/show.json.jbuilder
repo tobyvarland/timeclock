@@ -1,5 +1,5 @@
 json.period_ending_date @period.ends_on
-json.employees @period.users.distinct.by_number do |user|
+json.employees @all_users do |user|
   summary = Summarizer.new(user.punches.in_period(@period.id).chronological, user.employee_number < 1000)
   json.employee_number user.employee_number
   json.name user.name
