@@ -8,6 +8,8 @@ class ApplicationController < ActionController::Base
   helper_method :logged_in?
   helper_method :ipad_current_user
   helper_method :ipad_logged_in?
+  helper_method :phone_current_user
+  helper_method :phone_logged_in?
 
   # Sets auto refresh value for meta tag.
   def auto_refresh(delay = 30)
@@ -52,6 +54,20 @@ class ApplicationController < ActionController::Base
 
   def ipad_authorized
     redirect_to(ipad_employee_number_url) unless ipad_logged_in?
+  end
+
+  # Gets reference to current user.
+  def phone_current_user    
+    User.find_by(id: session[:phone_user_id])  
+  end
+
+  # Determines if user is logged in.
+  def phone_logged_in?
+    !phone_current_user.blank?  
+  end
+
+  def phone_authorized
+    redirect_to(phone_employee_number_url) unless phone_logged_in?
   end
 
   # Persist filters to cookies.

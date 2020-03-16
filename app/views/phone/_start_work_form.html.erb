@@ -1,0 +1,7 @@
+<%= form_with(model: punch, remote: true, class: "my-3") do |form| %>
+  <%= hidden_field_tag 'source', 'phone' %>
+  <%= form.hidden_field :user_id %>
+  <%= form.hidden_field :punch_at %>
+  <%= form.hidden_field :punch_type, value: "start_work" %>
+  <button class="btn btn-success btn-block btn-lg"><i class="fas fa-wrench"></i> Start Work</button>
+<% end %>

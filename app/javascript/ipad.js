@@ -2,6 +2,7 @@ var iPad = {
 
   currentTimeSelector: ".current-timestamp",
   punchAtSelector: "[data-controller=\"ipad\"] input[name=\"punch[punch_at]\"]",
+  phonePunchAtSelector: "[data-controller=\"ipad\"] input[name=\"punch[punch_at]\"]",
   updateClockInterval: null,
   keypadButtonSelector: '.keypad-button',
   textBox: null,
@@ -10,7 +11,7 @@ var iPad = {
 
   setupAutoLogout: function() {
     var $body = $("body");
-    if ($body.data('controller') == 'ipad' && ($body.data('action') == 'index' || $body.data('action') == 'timecard')) {
+    if (($body.data('controller') == 'ipad' || $body.data('controller') == 'phone') && ($body.data('action') == 'index' || $body.data('action') == 'timecard')) {
       iPad.autoLogoutTimeout = setTimeout(iPad.autoLogout, iPad.delayBeforeLogout);
       $(document).on("click", "a", function(event) {
         clearTimeout(iPad.autoLogoutTimeout);
@@ -185,6 +186,7 @@ var iPad = {
 
   updateClock: function() {
     $(iPad.punchAtSelector).val(iPad.getCurrentTimestamp(false));
+    $(iPad.phonePunchAtSelector).val(iPad.getCurrentTimestamp(false));
     $(iPad.currentTimeSelector).text(iPad.getCurrentTimestamp(true));
   },
 

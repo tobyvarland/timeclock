@@ -1,0 +1,26 @@
+<%= form_with(url: phone_employee_number_url, method: "post", class: "mt-3") do %>
+  <p class="lead text-center">Employee #:</p>
+  <div class="row">
+    <div class="col-12">
+      <div class="row">
+        <div class="col-12">
+          <select class="custom-select custom-select-lg">
+            <option selected></option>
+            <% @users.each do |u| %>
+              <option value="<%= u.employee_number %>"><%= u.employee_number %> <%= u.name %></option>
+            <% end %>
+          </select>
+        </div>
+        <div class="col-12 mt-3">
+          <%= content_tag(:div, class: "form-group") do %>
+            <%= text_field_tag(:employee_number, "", class: ["form-control", "form-control-lg", "text-center"], readonly: true, maxlength: "4") %>
+          <% end %>
+        </div>
+        <%= render partial: "keypad" %>
+        <div class="col-12 mt-3 text-center">
+          <%= link_to("<i class=\"fas fa-clock\"></i> Clocked In Now".html_safe, phone_now_url, class: ["btn", "btn-primary", "btn-lg"]) %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

@@ -1,0 +1,54 @@
+<div class="row">
+  <div class="col-12 d-flex flex-row justify-content-between align-items-center mt-3">
+    <p class="lead">
+      <strong><%= phone_current_user.name %></strong>
+      &raquo;
+      Time Card for Week of <%= Period.current.starts_on.strftime("%m/%d/%y") %> &ndash; <%= Period.current.ends_on.strftime("%m/%d/%y") %>
+    </p>
+    <%= link_to("Logout", phone_logout_url, method: :post, class: ["logout-button", "d-none"]) %>
+    <p>
+      <%= link_to("<i class=\"fas fa-times\"></i>".html_safe, phone_url, class: ["btn", "btn-sm", "btn-danger"]) %>
+    </p>
+  </div>
+</div>
+<div class="row">
+  <div class="col-12">
+    <% if @punches.blank? %>
+      <p>No records found.</p>
+    <% else %>
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped table-sm">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col" class="text-center">Day</th>
+              <th scope="col" class="text-center">Date</th>
+              <th scope="col" class="text-center">Time</th>
+              <th scope="col" class="text-center">Type</th>
+              <th scope="col" class="text-left">Edited?</th>
+              <th scope="col" class="text-left">Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @punches.each do |p| %>
+              <tr>
+                <td class="text-center"><%= p.punch_at.strftime("%A") %></td>
+                <td class="text-center"><%= p.punch_at.strftime("%m/%d/%y") %></td>
+                <td class="text-center"><%= p.punch_at.strftime("%I:%M%P") %></td>
+                <td class="text-center <%= class_for_punch_type(p.punch_type) %>"><%= p.punch_type.gsub(/_/, ' ').titlecase %></td>
+                <td class="text-left">
+                  <% if p.editor.blank? %>
+                    &nbsp;
+                  <% else %>
+                    <small class="text-muted">By:</small> <%= p.editor.name %>, <%= p.edited_at.strftime("%m/%d/%y %I:%M%P") %><br>
+                    <small class="text-muted">Reason:</small> <%= p.reason_code.code %>
+                  <% end %>
+                </td>
+                <td class="text-left"><%= p.notes %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -61,6 +61,22 @@ class PunchesController < ApplicationController
       return
     end
 
+    if params[:source].present? && params[:source] == "phone"
+      if @punch.save
+        redirect_to phone_card_url, notice: @punch.description
+      else
+        msg = "There was an error processing your request. Contact IT for help."
+        if @punch.errors.count > 0
+          msg = @punch.errors.full_messages[0]
+          if msg[-1] != "."
+            msg += "."
+          end
+        end
+        redirect_to phone_url, flash: { error: msg }
+      end
+      return
+    end
+
     respond_to do |format|
       if @punch.save
         format.html { redirect_to punches_url, notice: 'Successfully added record' }
