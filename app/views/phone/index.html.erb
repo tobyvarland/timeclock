@@ -7,8 +7,11 @@
     <% when "clocked_in" %>
       <%= render 'end_work_form', punch: @new_punch %>
       <%= render 'start_break_form', punch: @new_punch %>
+    <% when "remote_in" %>
+      <%= render 'end_remote_form', punch: @new_punch %>
     <% when "clocked_out", nil %>
       <%= render 'start_work_form', punch: @new_punch %>
+      <% if phone_current_user.remote_allowed %><%= render 'start_remote_form', punch: @new_punch %><% end %>
     <% when "on_break" %>
       <%= render 'end_break_form', punch: @new_punch %>
     <% end %>

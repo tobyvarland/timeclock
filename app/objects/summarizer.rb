@@ -11,6 +11,7 @@ class Summarizer
   attr_reader :other_shift_reg
   attr_reader :other_shift_ot
   attr_reader :shifts
+  attr_reader :remote
 
   # Constructor. Accepts collection of punches for a given user in a given period.
   def initialize(punches, use_rounding = true)
@@ -37,6 +38,7 @@ protected
     @first_shift_ot = 0
     @other_shift_reg = 0
     @other_shift_ot = 0
+    @remote = 0
     @shifts = []
     status = :out
     shift_start = nil
@@ -69,16 +71,88 @@ protected
       if status == :out
 
         # Error if invalid punch type.
-        if p.punch_type != "start_work"
+        if !["start_work", "remote_start"].include? p.punch_type
           @error = true
-          @error_msg = "Found record other than Start Work when clocked out."
+          @error_msg = "Found record other than Start Work or Remote Start when clocked out."
           break
         end
 
         # Change status and store shift start time.
-        status = :in
+        status = p.punch_type == "start_work" ? :in : :remote_in
         shift_start = p.punch_at
         current_shift_punches = [p]
+
+      # If status is remote in, may have remote end only.
+      elsif status == :remote_in
+
+        # Error if invalid punch type.
+        if p.punch_type != "remote_end"
+          @error = true
+          @error_msg = "Found record other than Remote End when clocked in remotely."
+          break
+        end
+
+        # Calculate hours and end shift.
+        current_shift_punches << p
+        shift_end = p.punch_at
+        shift_hours = self.calculate_shift_hours(shift_start, shift_end, true)
+        shift_first_shift_hours = 0
+        shift_other_shift_hours = 0
+        shift_remote_hours = 0
+        shift_total_hours = 0
+        shift_hours.each do |s_h|
+          if s_h[:shift] == "remote"
+            shift_remote_hours = s_h[:hours]
+            @remote += s_h[:hours]
+          else
+            if in_overtime
+              if s_h[:shift] != 1
+                @other_shift_ot += s_h[:hours]
+              else
+                @first_shift_ot += s_h[:hours]
+              end
+            else
+              if @total_hours + s_h[:hours] > 40
+                temp_reg = 40 - @total_hours
+                temp_ot = s_h[:hours] - temp_reg
+                if s_h[:shift] != 1
+                  @other_shift_reg += temp_reg
+                  @other_shift_ot += temp_ot
+                else
+                  @first_shift_reg += temp_reg
+                  @first_shift_ot += temp_ot
+                end
+                in_overtime = true
+              else
+                if s_h[:shift] != 1
+                  @other_shift_reg += s_h[:hours]
+                else
+                  @first_shift_reg += s_h[:hours]
+                end
+              end
+            end
+          end
+          @total_hours += s_h[:hours]
+          shift_total_hours += s_h[:hours]
+          unless s_h[:shift] == "remote"
+            if s_h[:shift] != 1
+              shift_other_shift_hours += s_h[:hours]
+            else
+              shift_first_shift_hours += s_h[:hours]
+            end
+          end
+        end
+        @shifts << {
+          punches: current_shift_punches,
+          first_shift_hours: shift_first_shift_hours,
+          other_shift_hours: shift_other_shift_hours,
+          remote_hours: shift_remote_hours,
+          total_hours: shift_total_hours
+        }
+        status = :out
+        shift_start = nil
+        shift_end = nil
+        current_shift_punches = nil
 
       # If status is in, may have start break or end work.
       elsif status == :in
@@ -99,6 +173,7 @@ protected
           shift_hours = self.calculate_shift_hours(shift_start, shift_end)
           shift_first_shift_hours = 0
           shift_other_shift_hours = 0
+          shift_remote_hours = 0
           shift_total_hours = 0
           shift_hours.each do |s_h|
             if in_overtime
@@ -139,6 +214,7 @@ protected
             punches: current_shift_punches,
             first_shift_hours: shift_first_shift_hours,
             other_shift_hours: shift_other_shift_hours,
+            remote_hours: shift_remote_hours,
             total_hours: shift_total_hours
           }
           status = :out
@@ -174,8 +250,15 @@ protected
   end
 
   # Calculates hours for a given shift.
-  def calculate_shift_hours(shift_start, shift_end)
+  def calculate_shift_hours(shift_start, shift_end, is_remote = false)
     hours_by_shift = []
+    if is_remote
+      total_hours = [((shift_end - shift_start) / 1.hour), 0].max
+      rounded_total_hours = (total_hours * 4).round / 4.0
+      rounded_total_hours += 0.25 if rounded_total_hours < total_hours
+      hours_by_shift << { shift: "remote", hours: rounded_total_hours }
+      return hours_by_shift
+    end
     rounded_start = @use_rounding ? VarlandTimeclock.clock_in_time(shift_start) : shift_start
     rounded_end = @use_rounding ? VarlandTimeclock.clock_out_time(shift_end) : shift_end
     case rounded_start.hour

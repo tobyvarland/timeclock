@@ -22,7 +22,7 @@ class PeriodsController < ApplicationController
       filters_to_cookies([:for_user])
       @punches = apply_scopes(@period.punches).includes(:user).reverse_chronological
       @filterable_users = User.where(id: @period.punches.pluck(:user_id).uniq).by_number.map {|u| ["#{u.employee_number} – #{u.name}", u.id]}
-      @all_users = User.without_salary.by_number
+      @all_users = User.by_number.without_salary
     end
   
     # PATCH/PUT /periods/1

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_20_124606) do
+ActiveRecord::Schema.define(version: 2020_04_28_212553) do
 
   create_table "periods", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.date "starts_on", null: false
@@ -23,7 +23,7 @@ ActiveRecord::Schema.define(version: 2020_02_20_124606) do
 
   create_table "punches", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.column "punch_type", "enum('start_work','end_work','start_break','end_break','notes')"
+    t.column "punch_type", "enum('start_work','end_work','start_break','end_break','notes','remote_start','remote_end')"
     t.datetime "punch_at", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -53,12 +53,13 @@ ActiveRecord::Schema.define(version: 2020_02_20_124606) do
     t.string "pin", limit: 4, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.column "status", "enum('clocked_in','clocked_out','on_break')"
+    t.column "status", "enum('clocked_in','clocked_out','on_break','remote_in')"
     t.datetime "status_timestamp"
     t.datetime "secondary_status_timestamp"
     t.datetime "deleted_at"
     t.integer "access_level", default: 1, null: false
     t.string "username"
+    t.boolean "remote_allowed", default: false, null: false
     t.index ["deleted_at"], name: "index_users_on_deleted_at"
   end
 

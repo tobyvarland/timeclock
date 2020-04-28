@@ -1,0 +1,7 @@
+<%= form_with(model: punch, remote: true, class: "my-3") do |form| %>
+  <%= hidden_field_tag 'source', 'phone' %>
+  <%= form.hidden_field :user_id %>
+  <%= form.hidden_field :punch_at %>
+  <%= form.hidden_field :punch_type, value: "remote_end" %>
+  <button class="btn btn-danger btn-block btn-lg"><i class="fas fa-wrench"></i> End Remote Work</button>
+<% end %>

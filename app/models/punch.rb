@@ -12,7 +12,9 @@ class Punch < ApplicationRecord
     end_work: "end_work",
     start_break: "start_break",
     end_break: "end_break",
-    notes: "notes"
+    notes: "notes",
+    remote_start: "remote_start",
+    remote_end: "remote_end",
   }
 
   # Associations.
@@ -120,6 +122,10 @@ class Punch < ApplicationRecord
       action = "Started break"
     when "end_break"
       action = "Ended break"
+    when "remote_start"
+      action = "Clocked in remotely"
+    when "remote_end"
+      action = "Clocked out remotely"
     else
       return nil
     end

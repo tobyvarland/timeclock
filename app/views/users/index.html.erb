@@ -10,6 +10,7 @@
       <th class="text-left">Name</th>
       <th class="text-center">Pin</th>
       <th class="text-center">System i</th>
+      <th class="text-center">Remote Allowed?</th>
       <th class="text-center">Access Level</th>
       <th class="text-center">Actions</th>
     </tr>
@@ -21,6 +22,7 @@
         <td class="text-left"><%= render 'name_form', user: u %></td>
         <td class="text-center"><%= render 'pin_form', user: u %></td>
         <td class="text-left"><%= render 'username_form', user: u %></td>
+        <td class="text-center"><%= render 'remote_allowed_form', user: u %></td>
         <td class="text-center"><%= render 'access_level_form', user: u %></td>
         <td class="text-center">
           <%= link_to '<i class="far fa-eye"></i> Details'.html_safe, u, class: ["btn", "btn-primary", "btn-sm"] %>

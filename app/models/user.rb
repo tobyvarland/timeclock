@@ -7,7 +7,8 @@ class User < ApplicationRecord
   enum status: {
     clocked_in: "clocked_in",
     clocked_out: "clocked_out",
-    on_break: "on_break"
+    on_break: "on_break",
+    remote_in: "remote_in"
   }
   enum access_level: {
     employee: 1,
@@ -51,7 +52,6 @@ class User < ApplicationRecord
   # Checks labor entry on System i for given date and shift.
   def labor_entered?(date, shift)
     uri = URI.parse("http://as400api.varland.com/v1/labor_entry?employee=#{self.employee_number}&shift=#{shift}&date=#{date.strftime("%Y-%m-%d")}")
-    puts uri
     http = Net::HTTP.new(uri.host, uri.port)
     request = Net::HTTP::Get.new(uri.request_uri)
     response = http.request(request)
@@ -86,6 +86,14 @@ class User < ApplicationRecord
         self.status_timestamp = punch.punch_at
         self.secondary_status_timestamp = nil
       when "end_work"
+        self.status = :clocked_out
+        self.status_timestamp = nil
+        self.secondary_status_timestamp = nil
+      when "remote_start"
+        self.status = :remote_in
+        self.status_timestamp = punch.punch_at
+        self.secondary_status_timestamp = nil
+      when "remote_end"
         self.status = :clocked_out
         self.status_timestamp = nil
         self.secondary_status_timestamp = nil

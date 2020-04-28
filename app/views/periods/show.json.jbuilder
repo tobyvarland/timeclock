@@ -12,10 +12,12 @@ json.employees @all_users do |user|
     json.first_shift_overtime summary.first_shift_ot
     json.other_shift_regular summary.other_shift_reg
     json.other_shift_overtime summary.other_shift_ot
+    json.remote summary.remote
     json.shifts summary.shifts do |shift|
       json.total_hours shift[:total_hours]
       json.first_shift_hours shift[:first_shift_hours]
       json.other_shift_hours shift[:other_shift_hours]
+      json.remote_hours shift[:remote_hours]
       json.punches shift[:punches] do |punch|
         json.type punch.punch_type
         json.timestamp punch.punch_at
