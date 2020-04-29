@@ -62,6 +62,7 @@ protected
           punches: [p],
           first_shift_hours: 0,
           other_shift_hours: 0,
+          remote_hours: 0,
           total_hours: 0
         }
         next
