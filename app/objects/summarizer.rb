@@ -254,7 +254,9 @@ protected
   def calculate_shift_hours(shift_start, shift_end, is_remote = false)
     hours_by_shift = []
     if is_remote
-      total_hours = [((shift_end - shift_start) / 1.hour), 0].max
+      rounded_start = Time.at(shift_start.change(:sec => 0)).in_time_zone
+      rounded_end = Time.at(shift_end.change(:sec => 0)).in_time_zone
+      total_hours = [((rounded_end - rounded_start) / 1.hour), 0].max
       rounded_total_hours = (total_hours * 4).round / 4.0
       rounded_total_hours += 0.25 if rounded_total_hours < total_hours
       hours_by_shift << { shift: "remote", hours: rounded_total_hours }

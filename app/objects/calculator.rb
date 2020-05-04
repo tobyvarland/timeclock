@@ -4,8 +4,8 @@ class Calculator
     if shift_end.blank?
       shift_end = DateTime.current.in_time_zone
     end
-    rounded_start = use_rounding ? VarlandTimeclock.clock_in_time(shift_start) : Time.at(shift_start).in_time_zone
-    rounded_end = use_rounding ? VarlandTimeclock.clock_out_time(shift_end) : Time.at(shift_end).in_time_zone
+    rounded_start = use_rounding ? VarlandTimeclock.clock_in_time(shift_start) : Time.at(shift_start.change(:sec => 0)).in_time_zone
+    rounded_end = use_rounding ? VarlandTimeclock.clock_out_time(shift_end) : Time.at(shift_end.change(:sec => 0)).in_time_zone
     return [((rounded_end - rounded_start) / 1.hour), 0].max
   end
 

@@ -20,7 +20,7 @@
       <ul class="list-group list-group-flush">
         <% @users.each do |u| %>
           <% next if u.employee_number < min || u.employee_number > max %>
-          <li class="list-group-item p-2 d-flex flex-row justify-content-between align-items-center bg-<%= u.status == "on_break" ? "on-break" : "clocked-in" %> small">
+          <li class="list-group-item p-2 d-flex flex-row justify-content-between align-items-center bg-<%= right_now_bg(u.status) %> small">
             <span><%= u.name %></span>
             <span><%= u.status_timestamp.strftime("%l:%M%P") %></span>
           </li>
