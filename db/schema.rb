@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_28_212553) do
+ActiveRecord::Schema.define(version: 2020_05_06_113500) do
 
   create_table "periods", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.date "starts_on", null: false
@@ -60,6 +60,9 @@ ActiveRecord::Schema.define(version: 2020_04_28_212553) do
     t.integer "access_level", default: 1, null: false
     t.string "username"
     t.boolean "remote_allowed", default: false, null: false
+    t.boolean "foreman_allowed", default: false, null: false
+    t.boolean "is_foreman", default: false, null: false
+    t.integer "foreman_priority", default: 0, null: false
     t.index ["deleted_at"], name: "index_users_on_deleted_at"
   end
 

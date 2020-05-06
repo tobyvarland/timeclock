@@ -7,6 +7,21 @@
   </div>
 </div>
 
+<div class="bg-dark text-white rounded-sm p-2 mb-3">
+  <% if @foremen.blank? %>
+    <p class="mb-0"><strong>Currently nobody clocked in as foreman.</strong></p>
+  <% else %>
+    <p class="mb-0">
+      <strong>
+        <span class="text-light">Current <%= "foreman".pluralize(@foremen.length) %>:</span>
+        <span class="text-warning">
+          <%= @foremen.pluck(:name).join(", ") %>
+        </span>
+      </strong>
+    </p>
+  <% end %>
+</div>
+
 <div class="row">
   <%= render partial: 'right_now_box', locals: { heading: "Plating", min: 0, max: 199 } %>
   <%= render partial: 'right_now_box', locals: { heading: "Maintenance", min: 200, max: 299 } %>

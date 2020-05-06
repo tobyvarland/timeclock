@@ -15,6 +15,7 @@ class TimeclockController < ApplicationController
   # Shows currently logged in users.
   def now
     @users = User.on_the_clock.by_number
+    @foremen = User.acting_as_foreman
     auto_refresh 20
   end
 

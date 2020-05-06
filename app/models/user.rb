@@ -43,6 +43,8 @@ class User < ApplicationRecord
   scope :by_number, -> { order(:employee_number) }
   scope :on_the_clock, -> { where("status != 'clocked_out'") }
   scope :without_salary, -> { where.not("(employee_number >= 700 AND employee_number <= 799)").where.not("(employee_number >= 900 AND employee_number <= 999)") }
+  scope :acting_as_foreman, -> { where("status != 'clocked_out'").where("is_foreman IS TRUE") }
+  scope :available_as_foreman, -> { where("status != 'clocked_out'").where("foreman_allowed IS TRUE").where("foreman_priority > 0").order("foreman_priority DESC, status_timestamp DESC") }
   
   # Callbacks.
   after_create  :update_status
@@ -89,6 +91,7 @@ class User < ApplicationRecord
         self.status = :clocked_out
         self.status_timestamp = nil
         self.secondary_status_timestamp = nil
+        self.is_foreman = false
       when "remote_start"
         self.status = :remote_in
         self.status_timestamp = punch.punch_at
@@ -116,10 +119,46 @@ class User < ApplicationRecord
       self.status = :clocked_out
       self.status_timestamp = nil
       self.secondary_status_timestamp = nil
+      self.is_foreman = false
     end
 
     # Save user.
     self.save
+
+  end
+
+  # Removes is_foreman flag and attempts to auto select new foreman.
+  def stop_being_foreman
+    self.is_foreman = false
+    self.save
+    User.auto_select_foreman(self.id)
+  end
+
+  # Sets is_foreman flag.
+  def start_being_foreman
+    self.is_foreman = true
+    self.save
+  end
+
+  # Class methods.
+
+  # Auto selects foreman.
+  def self.auto_select_foreman(exclude = nil)
+
+    # Exit if already user acting as foreman.
+    return unless acting_as_foreman.blank?
+
+    # Exit if no candidates.
+    if exclude.blank?
+      candidate = available_as_foreman.first
+    else
+      candidate = available_as_foreman.where.not(id: exclude).first
+    end
+    return if candidate.blank?
+
+    # Set candidate as foreman.
+    candidate.is_foreman = true
+    candidate.save
 
   end
 

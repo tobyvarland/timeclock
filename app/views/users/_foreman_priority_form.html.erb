@@ -1,0 +1,3 @@
+<%= form_with(model: user, remote: true) do |form| %>
+  <%= form.number_field :foreman_priority, class: ["form-control", "form-control-sm"], required: true %>
+<% end %>

@@ -3,7 +3,7 @@ class UsersController < ApplicationController
   # Require admin privileges.
   before_action :authorized_as_admin
 
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :set_user, only: [:show, :edit, :update, :destroy, :start_being_foreman, :stop_being_foreman]
 
   # GET /users
   # GET /users.json
@@ -78,6 +78,16 @@ class UsersController < ApplicationController
     end
   end
 
+  def start_being_foreman
+    @user.start_being_foreman
+    redirect_back fallback_location: { controller: "timeclock", action: "index" }, notice: "Successfully clocked in as foreman."
+  end
+
+  def stop_being_foreman
+    @user.stop_being_foreman
+    redirect_back fallback_location: { controller: "timeclock", action: "index" }, notice: "Successfully clocked out as foreman."
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
@@ -86,6 +96,6 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:employee_number, :name, :pin, :access_level, :username, :remote_allowed)
+      params.require(:user).permit(:employee_number, :name, :pin, :access_level, :username, :remote_allowed, :foreman_allowed, :is_foreman, :foreman_priority)
     end
 end

@@ -3,7 +3,12 @@ Rails.application.routes.draw do
   resources :periods
   resources :reason_codes
   resources :punches
-  resources :users
+  resources :users do
+    member do
+      post "start_being_foreman"
+      post "stop_being_foreman"
+    end
+  end
 
   root  'timeclock#index'
   
