@@ -3,5 +3,19 @@
   <%= form.hidden_field :user_id %>
   <%= form.hidden_field :punch_at %>
   <%= form.hidden_field :punch_type, value: "start_work" %>
-  <button onclick="alert('Don\'t forget to take and log your temperature!');" class="btn btn-success btn-block btn-lg"><i class="fas fa-wrench"></i> Start Work</button>
+  <div class="row">
+    <div class="col-12">
+      <div class="card mb-3 py-2 px-3 text-white bg-primary font-weight-bold text-center">
+        You must take and record your temperature before clocking in for work. Your temperature must not be higher than 99.5&deg;.
+      </div>
+    </div>
+    <div class="col-6 mb-0">
+      <div class="form-group mb-0">
+        <%= form.number_field :temperature, class: ["form-control", "form-control-lg", "text-center"], placeholder: "Temperature", required: true, min: 90, max: 105, step: 0.1 %>
+      </div>
+    </div>
+    <div class="col-6 mb-0">
+      <button class="btn btn-success btn-block btn-lg"><i class="fas fa-wrench"></i> Start Work</button>
+    </div>
+  </div>
 <% end %>

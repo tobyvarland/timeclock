@@ -121,7 +121,7 @@ class PunchesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def punch_params
-      params.require(:punch).permit(:user_id, :punch_type, :punch_at, :edited_by_id, :reason_code_id, :notes)
+      params.require(:punch).permit(:user_id, :punch_type, :punch_at, :edited_by_id, :reason_code_id, :notes, :temperature)
     end
 
 end

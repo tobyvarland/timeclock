@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_06_113500) do
+ActiveRecord::Schema.define(version: 2020_06_04_141917) do
 
   create_table "periods", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.date "starts_on", null: false
@@ -33,6 +33,7 @@ ActiveRecord::Schema.define(version: 2020_05_06_113500) do
     t.bigint "reason_code_id"
     t.text "notes"
     t.datetime "edited_at"
+    t.float "temperature"
     t.index ["deleted_at"], name: "index_punches_on_deleted_at"
     t.index ["edited_by_id"], name: "index_punches_on_edited_by_id"
     t.index ["period_id"], name: "index_punches_on_period_id"

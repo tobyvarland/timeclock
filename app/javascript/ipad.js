@@ -7,7 +7,7 @@ var iPad = {
   keypadButtonSelector: '.keypad-button',
   textBox: null,
   autoLogoutTimeout: null,
-  delayBeforeLogout: 5000,
+  delayBeforeLogout: 10000,
 
   setupAutoLogout: function() {
     var $body = $("body");
