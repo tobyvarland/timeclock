@@ -35,6 +35,10 @@ class Punch < ApplicationRecord
   validate  :require_open_period
   validate  :require_notes_if_reason_code
   validate  :require_labor_if_end_work
+  validate  :require_temperature_if_start_work
+  validates  :temperature,
+             numericality: { greater_than_or_equal_to: 95, less_than_or_equal_to: 99.5 },
+             allow_nil: true
   
   # Callbacks.
   after_save        :update_user_status
@@ -55,6 +59,14 @@ class Punch < ApplicationRecord
   scope :with_reason_code, ->(id) { where("reason_code_id = ?", id) unless id.blank? }
 
   # Instance methods.
+
+  # Requires temperature if starting work.
+  def require_temperature_if_start_work
+    return unless self.punch_type == "start_work"
+    if self.temperature.blank?
+      errors.add(:base, "You must enter your temperature when starting work.")
+    end
+  end
 
   # Requires labor entry on System i if clocking out.
   def require_labor_if_end_work
