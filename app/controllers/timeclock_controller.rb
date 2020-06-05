@@ -1,8 +1,17 @@
 class TimeclockController < ApplicationController
 
+  # Require supervisor privileges for viewing temperature log.
+  before_action :authorized_as_supervisor,
+                only: [:temperature_log]
+
   # Reference current user before each action.
   before_action :authorized,
-                except: :now
+                except: [:now, :temperature_log]
+
+  # Temperature log page.
+  def temperature_log
+    @punches = Punch.with_temperature.reverse_chronological
+  end
 
   # Timeclock home page.
   def index

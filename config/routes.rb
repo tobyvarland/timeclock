@@ -37,5 +37,6 @@ Rails.application.routes.draw do
   get   "logout",               to: "sessions#destroy"
   post  "logout",               to: "sessions#destroy"
   get   "now",                  to: "timeclock#now"
+  get   "tempetature_log",      to: "timeclock#temperature_log"
 
 end

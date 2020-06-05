@@ -1,0 +1,42 @@
+<% current_date = nil %>
+<div class="my-3 d-flex flex-row align-items-center justify-content-between">
+  <h1 class="m-0">
+    Temperature Log
+  </h1>
+</div>
+
+<% if @punches.blank? %>
+
+  <p>No records found.</p>
+
+<% else %>
+
+  <% @punches.each do |p| %>
+
+    <% if p.punch_at.to_date != current_date %>
+      <%= "</tbody></table>".html_safe unless current_date.nil? %>
+      <h3><%= p.punch_at.to_date.strftime("%A, %m/%d/%y") %></h3>
+      <table class="table table-bordered table-striped table-hover table-sm">
+        <thead class="thead-dark">
+          <tr>
+            <th class="text-left w-70">Employee</th>
+            <th class="text-center w-10">Time</th>
+            <th class="text-center w-20">Temperature</th>
+          </tr>
+        </thead>
+        <tbody>
+      <% current_date = p.punch_at.to_date %>
+    <% end %>
+
+    <tr>
+      <td class="text-left nowrap"><%= "#{p.user.employee_number} &ndash; #{p.user.name}".html_safe %></td>
+      <td class="text-center nowrap"><%= p.punch_at.strftime("%l:%M%P") %></td>
+      <td class="text-center nowrap"><%= p.temperature %>&deg; F</td>
+    </tr>
+
+  <% end %>
+
+    </tbody>
+  </table>
+
+<% end %>
