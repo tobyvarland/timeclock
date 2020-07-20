@@ -86,6 +86,12 @@ class Period < ApplicationRecord
     period_end = nil
     if date.wday == 6
       period_end = date.to_date
+    elsif date.wday == 0
+      if date.hour < 7
+        period_end = date.to_date.prev_occurring(:saturday)
+      else
+        period_end = date.to_date.next_occurring(:saturday)
+      end
     else
       period_end = date.to_date.next_occurring(:saturday)
     end
