@@ -8,6 +8,9 @@ Rails.application.routes.draw do
       post "start_being_foreman"
       post "stop_being_foreman"
     end
+    collection do
+      get "xray"
+    end
   end
 
   root  'timeclock#index'

@@ -1,7 +1,8 @@
 class UsersController < ApplicationController
 
   # Require admin privileges.
-  before_action :authorized_as_admin
+  before_action :authorized_as_admin,
+                except: [:xray]
 
   before_action :set_user, only: [:show, :edit, :update, :destroy, :start_being_foreman, :stop_being_foreman]
 
@@ -9,6 +10,13 @@ class UsersController < ApplicationController
   # GET /users.json
   def index
     @users = User.by_number
+  end
+
+  # GET /users/xray
+  # GET /users/xray.json
+  # GET /users/xray.txt
+  def xray
+    @users = User.only_employees.by_number
   end
 
   # GET /users/1

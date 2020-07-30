@@ -45,6 +45,7 @@ class User < ApplicationRecord
   scope :without_salary, -> { where.not("(employee_number >= 700 AND employee_number <= 799)").where.not("(employee_number >= 900 AND employee_number <= 999)") }
   scope :acting_as_foreman, -> { where("status != 'clocked_out'").where("is_foreman IS TRUE") }
   scope :available_as_foreman, -> { where("status != 'clocked_out'").where("foreman_allowed IS TRUE").where("foreman_priority > 0").order("foreman_priority DESC, status_timestamp DESC") }
+  scope :only_employees, -> { where("employee_number < ?", 1000) }
   
   # Callbacks.
   after_create  :update_status
