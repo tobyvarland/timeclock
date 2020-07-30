@@ -46,6 +46,7 @@ class User < ApplicationRecord
   scope :acting_as_foreman, -> { where("status != 'clocked_out'").where("is_foreman IS TRUE") }
   scope :available_as_foreman, -> { where("status != 'clocked_out'").where("foreman_allowed IS TRUE").where("foreman_priority > 0").order("foreman_priority DESC, status_timestamp DESC") }
   scope :only_employees, -> { where("employee_number < ?", 1000) }
+  scope :for_xray, -> { where("(status != 'clocked_out' AND employee_number < 1000) OR (employee_number >= 700 and employee_number <= 799) OR (employee_number >= 900 and employee_number <= 999)").order(:employee_number) }
   
   # Callbacks.
   after_create  :update_status

@@ -16,7 +16,7 @@ class UsersController < ApplicationController
   # GET /users/xray.json
   # GET /users/xray.txt
   def xray
-    @users = User.only_employees.by_number
+    @users = User.for_xray
   end
 
   # GET /users/1
