@@ -19,6 +19,11 @@ class UsersController < ApplicationController
     @users = User.for_xray
   end
 
+  # GET /users/roster
+  def roster
+    @users = User.with_deleted.by_number
+  end
+
   # GET /users/1
   # GET /users/1.json
   def show
