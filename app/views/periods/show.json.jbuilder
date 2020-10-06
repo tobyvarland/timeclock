@@ -14,6 +14,7 @@ json.employees @all_users do |user|
     json.other_shift_overtime summary.other_shift_ot
     json.remote summary.remote
     json.shifts summary.shifts do |shift|
+      json.break_length shift[:break_length]
       json.total_hours shift[:total_hours]
       json.first_shift_hours shift[:first_shift_hours]
       json.other_shift_hours shift[:other_shift_hours]
