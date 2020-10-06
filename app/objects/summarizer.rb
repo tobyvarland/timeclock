@@ -249,7 +249,7 @@ protected
 
         # Change status and store shift start time.
         break_end = p.punch_at
-        break_length = (break_end - break_start) / 60.0
+        break_length = (break_end.change(:sec => 0) - break_start.change(:sec => 0)) / 60.0
         current_shift_punches << p
         status = :in
 
