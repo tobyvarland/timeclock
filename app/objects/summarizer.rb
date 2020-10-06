@@ -45,6 +45,9 @@ protected
     shift_end = nil
     current_shift_punches = nil
     in_overtime = false
+    break_start = nil
+    break_end = nil
+    break_length = 0
 
     # If no punches, store error.
     if @punches.blank? || @punches.length == 0
@@ -63,7 +66,8 @@ protected
           first_shift_hours: 0,
           other_shift_hours: 0,
           remote_hours: 0,
-          total_hours: 0
+          total_hours: 0,
+          break_length: 0,
         }
         next
       end
@@ -148,12 +152,16 @@ protected
           first_shift_hours: shift_first_shift_hours,
           other_shift_hours: shift_other_shift_hours,
           remote_hours: shift_remote_hours,
-          total_hours: shift_total_hours
+          total_hours: shift_total_hours,
+          break_length: 0,
         }
         status = :out
         shift_start = nil
         shift_end = nil
         current_shift_punches = nil
+        break_start = nil
+        break_end = nil
+        break_length = 0
 
       # If status is in, may have start break or end work.
       elsif status == :in
@@ -169,6 +177,7 @@ protected
         current_shift_punches << p
         if p.punch_type == "start_break"
           status = :break
+          break_start = p.punch_at
         else
           shift_end = p.punch_at
           shift_hours = self.calculate_shift_hours(shift_start, shift_end)
@@ -216,12 +225,16 @@ protected
             first_shift_hours: shift_first_shift_hours,
             other_shift_hours: shift_other_shift_hours,
             remote_hours: shift_remote_hours,
-            total_hours: shift_total_hours
+            total_hours: shift_total_hours,
+            break_length: break_length,
           }
           status = :out
           shift_start = nil
           shift_end = nil
           current_shift_punches = nil
+          break_start = nil
+          break_end = nil
+          break_length = 0
         end
 
       # If status is break, only valid punch type is end_break.
@@ -235,6 +248,8 @@ protected
         end
 
         # Change status and store shift start time.
+        break_end = p.punch_at
+        break_length = break_end - break_start
         current_shift_punches << p
         status = :in
 
