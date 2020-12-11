@@ -6,7 +6,7 @@ class TimeclockController < ApplicationController
 
   # Reference current user before each action.
   before_action :authorized,
-                except: [:now, :temperature_log]
+                except: [:now, :temperature_log, :foremen_email]
 
   # Temperature log page.
   def temperature_log
@@ -26,6 +26,11 @@ class TimeclockController < ApplicationController
     @users = User.on_the_clock.by_number
     @foremen = User.acting_as_foreman
     auto_refresh 20
+  end
+
+  # Returns email addresses for current foremen.
+  def foremen_email
+    @email_addresses = ["vmsforemen@gmail.com"]
   end
 
 end
