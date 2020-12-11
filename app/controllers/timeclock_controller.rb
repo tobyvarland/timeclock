@@ -30,7 +30,7 @@ class TimeclockController < ApplicationController
 
   # Returns email addresses for current foremen.
   def foremen_email
-    @email_addresses = ["vmsforemen+timeclock@gmail.com"]
+    @email_addresses = ["vmsforemen@gmail.com"]
   end
 
 end
