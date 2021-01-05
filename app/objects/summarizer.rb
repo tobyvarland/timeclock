@@ -19,6 +19,7 @@ class Summarizer
     # Save collection of punches and options.
     @punches = punches
     @use_rounding = use_rounding
+    @use_2021 = nil
 
     # Calculate stats for punches.
     self.calc_stats
@@ -58,6 +59,14 @@ protected
 
     # Loop through punches to calculate time.
     @punches.each do |p|
+
+      if @use_2021.nil?
+        if p.punch_at.year > 2021 || (p.punch_at.year == 2021 && p.punch_at.yday >= 3)
+          @use_2021 = true
+        else
+          @use_2021 = false
+        end
+      end
 
       # Skip notes.
       if p.punch_type == "notes"
@@ -268,26 +277,43 @@ protected
   # Calculates hours for a given shift.
   def calculate_shift_hours(shift_start, shift_end, is_remote = false)
     hours_by_shift = []
+    periods_per_hour = 4.0
+    total_shifts = 3
+    if @use_2021
+      periods_per_hour = 10.0
+      total_shifts = 2
+    end
     if is_remote
       rounded_start = Time.at(shift_start.change(:sec => 0)).in_time_zone
       rounded_end = Time.at(shift_end.change(:sec => 0)).in_time_zone
       total_hours = [((rounded_end - rounded_start) / 1.hour), 0].max
-      rounded_total_hours = (total_hours * 4).round / 4.0
-      rounded_total_hours += 0.25 if rounded_total_hours < total_hours
+      rounded_total_hours = (total_hours * periods_per_hour).round / periods_per_hour
+      rounded_total_hours += (1 / periods_per_hour) if rounded_total_hours < total_hours
       hours_by_shift << { shift: "remote", hours: rounded_total_hours }
       return hours_by_shift
     end
     rounded_start = @use_rounding ? VarlandTimeclock.clock_in_time(shift_start) : shift_start
     rounded_end = @use_rounding ? VarlandTimeclock.clock_out_time(shift_end) : shift_end
-    case rounded_start.hour
-    when 0..6
-      shift = 3
-    when 7..14
-      shift = 1
-    when 15..22
-      shift = 2
-    when 23
-      shift = 3
+    if @use_2021
+      case rounded_start.hour
+      when 0..6
+        shift = 2
+      when 7..18
+        shift = 1
+      when 19..23
+        shift = 2
+      end
+    else
+      case rounded_start.hour
+      when 0..6
+        shift = 3
+      when 7..14
+        shift = 1
+      when 15..22
+        shift = 2
+      when 23
+        shift = 3
+      end
     end
     current_start = rounded_start
     next_delineation = nil
@@ -297,7 +323,7 @@ protected
       hours_by_shift << { shift: shift, hours: current_shift_hours }
       current_start = next_delineation
       shift += 1
-      shift = 1 if shift > 3
+      shift = 1 if shift > total_shifts
     end
     return hours_by_shift
   end
@@ -305,15 +331,26 @@ protected
   # Calculates end of shift for given time.
   def calculate_end_of_shift(timestamp)
     end_of_hour = timestamp.end_of_hour
-    case end_of_hour.hour
-    when 0..6
-      target = 7
-    when 7..14
-      target = 15
-    when 15..22
-      target = 23
-    when 23
-      target = 7
+    if @use_2021
+      case end_of_hour.hour
+      when 0..6
+        target = 7
+      when 7..18
+        target = 19
+      when 19..23
+        target = 7
+      end
+    else
+      case end_of_hour.hour
+      when 0..6
+        target = 7
+      when 7..14
+        target = 15
+      when 15..22
+        target = 23
+      when 23
+        target = 7
+      end
     end
     advanced = end_of_hour.advance(seconds: 1)
     until advanced.hour == target
