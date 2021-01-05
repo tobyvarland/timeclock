@@ -76,18 +76,16 @@ class Punch < ApplicationRecord
     return if self.user.blank?
     return if self.user.employee_number >= 600
     return unless self.reason_code.blank?
-    target_time = self.punch_at - 15.minutes
+    target_time = self.punch_at - 6.minutes
     shift = nil
     case target_time.hour
     when 0..6
-      shift = 3
-      target_time -= 8.hours
-    when 7..14
-      shift = 1
-    when 15..22
       shift = 2
-    when 23
-      shift = 3
+      target_time -= 8.hours
+    when 7..18
+      shift = 1
+    when 19..23
+      shift = 2
     end
     unless self.user.labor_entered? target_time, shift
       errors.add(:base, "Not allowed to clock out without entering labor on the System i for #{shift}#{shift.ordinal} shift on #{target_time.strftime("%m/%d")}")
