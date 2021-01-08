@@ -36,7 +36,7 @@ class TimeclockController < ApplicationController
     end
     @email_addresses = ["vmsforemen@gmail.com"]
     @foremen.each do |f|
-      @email_addresses << f.name
+      @email_addresses << f.foreman_email
     end
   end
 
