@@ -1,0 +1,3 @@
+<%= form_with(model: user, remote: true) do |form| %>
+  <%= form.check_box :is_aux_foreman, onchange: "this.form.dispatchEvent(new Event('submit', {bubbles: true}));" %>
+<% end %>

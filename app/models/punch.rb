@@ -42,7 +42,6 @@ class Punch < ApplicationRecord
   
   # Callbacks.
   after_save        :update_user_status
-  after_save        :auto_select_foreman
   after_destroy     :update_user_status
   before_validation :set_period
   before_save       :update_edit_timestamp
@@ -147,11 +146,6 @@ class Punch < ApplicationRecord
   # Updates user status after punch saved.
   def update_user_status
     self.user.update_status unless self.punch_type == :notes
-  end
-
-  # Auto select foreman if necessary.
-  def auto_select_foreman
-    User.auto_select_foreman
   end
 
 end

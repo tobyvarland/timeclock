@@ -109,6 +109,6 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:employee_number, :name, :pin, :access_level, :username, :remote_allowed, :foreman_allowed, :is_foreman, :foreman_priority)
+      params.require(:user).permit(:employee_number, :name, :pin, :access_level, :username, :remote_allowed, :foreman_allowed, :is_foreman, :is_aux_foreman)
     end
 end

@@ -44,9 +44,10 @@ class User < ApplicationRecord
   scope :on_the_clock, -> { where("status != 'clocked_out'") }
   scope :without_salary, -> { where.not("(employee_number >= 700 AND employee_number <= 799)").where.not("(employee_number >= 900 AND employee_number <= 999)") }
   scope :acting_as_foreman, -> { where("status != 'clocked_out'").where("is_foreman IS TRUE") }
-  scope :available_as_foreman, -> { where("status != 'clocked_out'").where("foreman_allowed IS TRUE").where("foreman_priority > 0").order("foreman_priority DESC, status_timestamp DESC") }
+  scope :available_as_foreman, -> { where("status != 'clocked_out'").where("foreman_allowed IS TRUE").order("status_timestamp DESC") }
   scope :only_employees, -> { where("employee_number < ?", 1000) }
   scope :for_xray, -> { where("(status != 'clocked_out' AND employee_number < 1000) OR (employee_number >= 700 and employee_number <= 799) OR (employee_number >= 900 and employee_number <= 999)").order(:employee_number) }
+  scope :aux_foreman, -> { where("is_aux_foreman IS TRUE") }
   
   # Callbacks.
   after_create  :update_status
@@ -89,6 +90,9 @@ class User < ApplicationRecord
         self.status = :clocked_in
         self.status_timestamp = punch.punch_at
         self.secondary_status_timestamp = nil
+        if self.foreman_allowed
+          self.is_foreman = true
+        end
       when "end_work"
         self.status = :clocked_out
         self.status_timestamp = nil
@@ -133,35 +137,12 @@ class User < ApplicationRecord
   def stop_being_foreman
     self.is_foreman = false
     self.save
-    User.auto_select_foreman(self.id)
   end
 
   # Sets is_foreman flag.
   def start_being_foreman
     self.is_foreman = true
     self.save
-  end
-
-  # Class methods.
-
-  # Auto selects foreman.
-  def self.auto_select_foreman(exclude = nil)
-
-    # Exit if already user acting as foreman.
-    return unless acting_as_foreman.blank?
-
-    # Exit if no candidates.
-    if exclude.blank?
-      candidate = available_as_foreman.first
-    else
-      candidate = available_as_foreman.where.not(id: exclude).first
-    end
-    return if candidate.blank?
-
-    # Set candidate as foreman.
-    candidate.is_foreman = true
-    candidate.save
-
   end
 
 end
