@@ -26,7 +26,7 @@ class TimeclockController < ApplicationController
     @users = User.on_the_clock.by_number
     @foremen = User.acting_as_foreman
     if @foremen.blank?
-      @foremen = User.aux_foreman
+      @foremen = User.aux_foreman if User.on_the_clock.length >= 2
     end
     auto_refresh 20
   end
@@ -35,7 +35,7 @@ class TimeclockController < ApplicationController
   def foremen_email
     @foremen = User.acting_as_foreman
     if @foremen.blank?
-      @foremen = User.aux_foreman
+      @foremen = User.aux_foreman if User.on_the_clock.length >= 2
     end
     @email_addresses = ["vmsforemen@gmail.com"]
     @foremen.each do |f|
