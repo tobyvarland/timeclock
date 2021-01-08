@@ -2,7 +2,7 @@ class UsersController < ApplicationController
 
   # Require admin privileges.
   before_action :authorized_as_admin,
-                except: [:xray]
+                except: [:xray, :start_being_foreman, :stop_being_foreman]
 
   before_action :set_user, only: [:show, :edit, :update, :destroy, :start_being_foreman, :stop_being_foreman]
 
