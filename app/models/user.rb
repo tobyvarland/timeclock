@@ -44,7 +44,6 @@ class User < ApplicationRecord
   scope :on_the_clock, -> { where("status != 'clocked_out'") }
   scope :without_salary, -> { where.not("(employee_number >= 700 AND employee_number <= 799)").where.not("(employee_number >= 900 AND employee_number <= 999)") }
   scope :acting_as_foreman, -> { where("status != 'clocked_out'").where("is_foreman IS TRUE") }
-  scope :available_as_foreman, -> { where("status != 'clocked_out'").where("foreman_allowed IS TRUE").order("status_timestamp DESC") }
   scope :only_employees, -> { where("employee_number < ?", 1000) }
   scope :for_xray, -> { where("(status != 'clocked_out' AND employee_number < 1000) OR (employee_number >= 700 and employee_number <= 799) OR (employee_number >= 900 and employee_number <= 999)").order(:employee_number) }
   scope :aux_foreman, -> { where("is_aux_foreman IS TRUE") }

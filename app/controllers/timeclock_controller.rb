@@ -30,7 +30,14 @@ class TimeclockController < ApplicationController
 
   # Returns email addresses for current foremen.
   def foremen_email
+    @foremen = User.acting_as_foreman
+    if @foremen.blank?
+      @foremen = User.aux_foreman
+    end
     @email_addresses = ["vmsforemen@gmail.com"]
+    @foremen.each do |f|
+      @email_addresses << f.name
+    end
   end
 
 end
