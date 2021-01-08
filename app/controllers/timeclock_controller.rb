@@ -25,6 +25,9 @@ class TimeclockController < ApplicationController
   def now
     @users = User.on_the_clock.by_number
     @foremen = User.acting_as_foreman
+    if @foremen.blank?
+      @foremen = User.aux_foreman
+    end
     auto_refresh 20
   end
 
