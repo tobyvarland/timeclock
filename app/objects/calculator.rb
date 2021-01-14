@@ -55,8 +55,8 @@ class Calculator
         status = :out
         shift_end = p.punch_at
         shift_hours = self.calculate_shift_hours(shift_start, shift_end, false)
-        rounded_shift_hours = (shift_hours * 4).round / 4.0
-        rounded_shift_hours += 0.25 if rounded_shift_hours < shift_hours
+        rounded_shift_hours = (shift_hours * 10).round / 10.0
+        rounded_shift_hours += 0.1 if rounded_shift_hours < shift_hours
         shift_hours = rounded_shift_hours
         hours += shift_hours
         shifts << { remote: true, start: shift_start, end: shift_end, hours: shift_hours, current: false }
@@ -102,8 +102,8 @@ class Calculator
       as_of = DateTime.current
       hours_so_far = self.calculate_shift_hours(shift_start, as_of, !is_remote)
       if is_remote
-        rounded_hours_so_far = (hours_so_far * 4).round / 4.0
-        rounded_hours_so_far += 0.25 if rounded_hours_so_far < hours_so_far
+        rounded_hours_so_far = (hours_so_far * 10).round / 10.0
+        rounded_hours_so_far += 0.1 if rounded_hours_so_far < hours_so_far
         hours_so_far = rounded_hours_so_far
       end
       shifts << { remote: is_remote, start: shift_start, end: as_of, hours: hours_so_far, current: true }
